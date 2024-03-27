@@ -88,21 +88,44 @@ namespace trainTicketApp.Controllers
 
             Profile user = trainDbContext.User.FirstOrDefault(x => x.ID == identity.ID);
 
-            var tickets = trainDbContext.Ticket.Where(r => r.ProfileId == identity.ID).Select(t => new TicketView
+            //Avoid Repeated Query on table(train/seat/carrige) for each ticket
+            var tickets = (
+                from ticket in trainDbContext.Ticket
+                join train in trainDbContext.Train on ticket.TrainId equals train.TrainID
+                join carrige in trainDbContext.Carrige on ticket.CarrigeId equals carrige.CarrigeID
+                join seat in trainDbContext.Seat on ticket.SeatId equals seat.SeatID
+                where ticket.ProfileId == identity.ID
+                select new TicketView
+                {
+                    TicketID = ticket.TicketID,
+                    TrainName = train.TrainName,
+                    CarrigeName = carrige.Name,
+                    SeatName = seat.SeatName,
+                    ArrivingTime = ticket.ArrivalTime,
+                    LeavingTime = ticket.LeavingTime,
+                    ArrivingCity = ticket.ArrivingCity,
+                    LeavingCity = ticket.LeavingCity,
+                    LastName = user.LastName,
+                    FirstName = user.FirstName
+                }).ToList();
 
-            {
-                TicketID = t.TicketID,
-                TrainName = trainDbContext.Train.FirstOrDefault(x => x.TrainID == t.TrainId).TrainName,
-                CarrigeName = trainDbContext.Carrige.FirstOrDefault(x => x.CarrigeID == t.CarrigeId).Name,
-                SeatName = trainDbContext.Seat.FirstOrDefault(x => x.SeatID == t.SeatId).SeatName,
-                ArrivingTime = t.ArrivalTime,
-                LeavingTime = t.LeavingTime,
-                ArrivingCity = t.ArrivingCity,
-                LeavingCity = t.LeavingCity,
-                LastName = user.LastName,
-                FirstName = user.FirstName,
 
-            }).ToList();
+
+            //var tickets = trainDbContext.Ticket.Where(r => r.ProfileId == identity.ID).Select(t => new TicketView
+
+            //{
+            //    TicketID = t.TicketID,
+            //    TrainName = trainDbContext.Train.FirstOrDefault(x => x.TrainID == t.TrainId).TrainName,
+            //    CarrigeName = trainDbContext.Carrige.FirstOrDefault(x => x.CarrigeID == t.CarrigeId).Name,
+            //    SeatName = trainDbContext.Seat.FirstOrDefault(x => x.SeatID == t.SeatId).SeatName,
+            //    ArrivingTime = t.ArrivalTime,
+            //    LeavingTime = t.LeavingTime,
+            //    ArrivingCity = t.ArrivingCity,
+            //    LeavingCity = t.LeavingCity,
+            //    LastName = user.LastName,
+            //    FirstName = user.FirstName,
+
+            //}).ToList();
 
             return Ok(tickets);
         }

@@ -91,7 +91,7 @@ export default function MainPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = "https://localhost:7156/api/Course/GetAllCourses/GetAllreservations";
+        let url = "https://localhost:7156/api/Course/GetAllCourses/GetAllCourses";
         const response = await fetch(url, {
           method: "Get",
           headers: {
