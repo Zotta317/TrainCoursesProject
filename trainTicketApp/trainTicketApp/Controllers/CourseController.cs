@@ -21,35 +21,38 @@ namespace trainTicketApp.Controllers
         }
 
         [HttpGet("GetAllCourses")]
-        public IActionResult GetAllCourses()
+        public IActionResult GetAllCourses(String selectedLeavingTime)
         {
 
-            var courses = (from course in trainDbContext.Course
-               join train in trainDbContext.Train on course.TrainId equals train.TrainID
-               select new CourseView
-               {
-                   CourseID = course.CourseID,
-                   LeavingCity = course.LeavingCity,
-                   ArrivingCity = course.ArrivingCity,
-                   LeavingTime = course.LeavingTime,
-                   ArrivingTime = course.ArivingTime,
-                   AvailableTrainSeats = trainDbContext.Seat
-                                  .Count(s => s.Booked == false && s.CourseId == course.CourseID),
-                   TrainName = train.TrainName,
-               }).ToList();
+            var selectedDate = DateTime.Parse(selectedLeavingTime);
+            var query = trainDbContext.Course.Where(c => c.LeavingTime >= selectedDate);
+            
+            var courses = query.Select(c => new CourseView
+            {
+                CourseID = c.CourseID,
+                LeavingCity = c.LeavingCity,
+                ArrivingCity = c.ArrivingCity,
+                LeavingTime = c.LeavingTime,
+                ArrivingTime = c.ArivingTime,
+                AvailableTrainSeats = trainDbContext.Seat
+                                     .Count(s => s.Booked == false && s.CourseId == c.CourseID),
+                TrainName = trainDbContext.Train.FirstOrDefault(t => t.TrainID == c.TrainId).TrainName,
+            }).ToList();
 
-            //var courses = trainDbContext.Course.Select(c => new CourseView
-            //{
-            //    CourseID = c.CourseID,
-            //    LeavingCity = c.LeavingCity,
-            //    ArrivingCity = c.ArrivingCity,
-            //    LeavingTime = c.LeavingTime,
-            //    ArrivingTime = c.ArivingTime,
-            //    AvailableTrainSeats = trainDbContext.Seat
-            //                         .Count(s => s.Booked == false && s.CourseId == c.CourseID),
-            //    TrainName = trainDbContext.Train.FirstOrDefault(t => t.TrainID == c.TrainId).TrainName,
-            //}).ToList();
-        
+
+            //var courses = (from course in trainDbContext.Course
+            //   join train in trainDbContext.Train on course.TrainId equals train.TrainID
+            //   select new CourseView
+            //   {
+            //       CourseID = course.CourseID,
+            //       LeavingCity = course.LeavingCity,
+            //       ArrivingCity = course.ArrivingCity,
+            //       LeavingTime = course.LeavingTime,
+            //       ArrivingTime = course.ArivingTime,
+            //       AvailableTrainSeats = trainDbContext.Seat
+            //                      .Count(s => s.Booked == false && s.CourseId == course.CourseID),
+            //       TrainName = train.TrainName,
+            //   }).ToList();
 
             return Ok(courses);
         }

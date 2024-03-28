@@ -3,9 +3,9 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import React, { useEffect, useState } from "react";
-import { json, useNavigate } from "react-router-dom";
 import { Course } from "../models/Course";
 import NavigationBar from "./NavigationBar";
+import dayjs, { Dayjs } from "dayjs";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -27,9 +27,9 @@ export default function MainPage() {
   // const navigate = useNavigate();
   
   const token = localStorage.getItem("authToken");
-
+  const [dateValue, setdateValue] = React.useState<Dayjs | null>(dayjs());
   const [courseViews, setCourseViews] = useState<Course[]>([])
-
+  const [selectedLeavingTime,setSelectedLeavingTime] = React.useState<String | undefined>('2024-03-28T17:13:36')
   //filter courses based on user's preferences
   const selectedCity: Course[] = courseViews
     ? courseViews.filter((course) => course?.leavingCity == selectedCurrentCity && (!selectedDestinationCity || course?.arrivingCity == selectedDestinationCity))
@@ -37,8 +37,8 @@ export default function MainPage() {
         courseID: courseViews.courseID,
         arrivingCity: courseViews.arrivingCity,
         leavingCity: courseViews.leavingCity,
-        arrivingDate: courseViews.arrivingDate,
-        leavingDate: courseViews.leavingDate,
+        arrivingTime: courseViews.arrivingTime,
+        leavingTime: courseViews.leavingTime,
         availableTrainSeats: courseViews.availableTrainSeats,
         trainName: courseViews.trainName,
         trainType: courseViews.trainType
@@ -91,7 +91,7 @@ export default function MainPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = "https://localhost:7156/api/Course/GetAllCourses/GetAllCourses";
+        let url = `https://localhost:7156/api/Course/GetAllCourses/GetAllCourses?selectedLeavingTime=${selectedLeavingTime}`;
         const response = await fetch(url, {
           method: "Get",
           headers: {
@@ -105,16 +105,27 @@ export default function MainPage() {
 
         const data = await response.json();
         setCourseViews(data);
-
+      
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
-
-
   })
+
+  const handleDateChange = (newValue: Dayjs | null) => {
+    setdateValue(newValue);
+  }
+
+  useEffect(() =>{
+    console.log(dateValue);
+    const formattedDate = dateValue?.format("YYYY-MM-DDTHH:mm:ss")
+    setSelectedLeavingTime(formattedDate);
+    console.log(selectedLeavingTime)
+  }   
+   , [dateValue])
+  
   return (
     <>
       <NavigationBar />
@@ -155,6 +166,9 @@ export default function MainPage() {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   label="Date"
+                  value = {dateValue}
+                  onChange={handleDateChange}
+                  minDate={dayjs()}
                 />
               </LocalizationProvider>
             </FormControl>
@@ -216,7 +230,7 @@ export default function MainPage() {
                         marginRight: 30,
                       }}
                     >
-                      Leaving Date : {courseView?.leavingDate ? new Date(courseView.leavingDate).toLocaleString() : ""}
+                      Leaving Date : {courseView?.leavingTime ? new Date(courseView.arrivingTime).toLocaleString() : ""}
                     </Typography>
                   </Stack>
                   <Stack direction="column">
@@ -236,7 +250,7 @@ export default function MainPage() {
                         marginRight: 30,
                       }}
                     >
-                      Arival Date : {courseView?.arrivingDate ? new Date(courseView.arrivingDate).toLocaleString() : ""}
+                      Arival Date : {courseView?.arrivingTime ? new Date(courseView.arrivingTime).toLocaleString() : ""}
                     </Typography>
                   </Stack>
                   <Stack direction="row" alignItems="center" spacing={10}>
