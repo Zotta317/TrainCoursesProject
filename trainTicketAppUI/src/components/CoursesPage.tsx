@@ -4,17 +4,18 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { TrainPlatform } from "../models/TrainPlatform";
 
 export default function CoursesPage() {
     const cities = ["Cluj-Napoca", "Brasov", "Bucuresti", "Iasi", "Oradea", "Galati", "Suceava"]
     const [selectedCurrentCity, setSelectedCurrentCity] = useState<string>("");
     const [selectedDestinationCity, setSelectedDestinationCity] = useState<string>("");
 
+    const [trainPlatforms, setTrainPlatforms] = useState<TrainPlatform[]>();
     const filteredCities = cities.filter(city => city !== selectedCurrentCity);
     const token = localStorage.getItem("authToken");
-  
-    useEffect(() => {
-        const fetchGetPlatform = async () => {
+    
+    const fetchGetPlatform = async () => {
             try {
                 let url = `https://localhost:7156/api/Platform/GetPlatform?leavingCity=${selectedCurrentCity}`
                 const response = await fetch(url, {
@@ -28,12 +29,18 @@ export default function CoursesPage() {
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
-                
+                setTrainPlatforms(data);
             }catch (error) {
       console.error('Error fetching data:', error);
     }
         }
-    })
+
+    useEffect(() => {
+        fetchGetPlatform();
+    },[selectedCurrentCity]);
+
+    console.log(trainPlatforms)
+    
     return (
         <>
             <NavigationBar />
