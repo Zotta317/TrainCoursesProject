@@ -1,6 +1,6 @@
-﻿namespace trainTicketApp.Model
+﻿namespace trainTicketApp.ModelView
 {
-    public class Platform
+    public class PlatformView
     {
         public Guid PlatformID { get; set; }
 

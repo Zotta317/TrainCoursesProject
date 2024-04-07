@@ -1,4 +1,4 @@
-import { Box, Button, Divider, FormControl, Grid, InputLabel, MenuItem, Modal, Select, Stack, Typography } from "@mui/material";
+import { Box, Button, Divider, FormControl, Grid, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -139,9 +139,10 @@ export default function MainPage() {
           flexDirection: "column",
         }}
       >
-        <Grid container spacing={2} margin={10} marginLeft={83}>
+        <Grid container spacing={2}  marginLeft={83}>
 
           <Grid item xs={3}>
+
             <FormControl
               fullWidth>
               <InputLabel id="demo-simple-select-label">City</InputLabel>

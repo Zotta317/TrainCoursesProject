@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using trainTicketApp.Data;
 using trainTicketApp.Model;
 using trainTicketApp.ModelView;
+using static trainTicketApp.Data.TraintDataApi;
 
 namespace trainTicketApp.Controllers
 {
@@ -56,6 +57,8 @@ namespace trainTicketApp.Controllers
 
             return Ok(courses);
         }
+
+
 
         [HttpPost("AddCourses")]
         public async Task<IActionResult> AddCourse(CourseInput courseInput)
@@ -115,11 +118,13 @@ namespace trainTicketApp.Controllers
                     trainDbContext.Seat.Add(seat);
                 }
 
-
+                
             }
 
             await trainDbContext.SaveChangesAsync();
         }
 
     }
+
+   
 }

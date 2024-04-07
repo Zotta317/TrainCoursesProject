@@ -50,7 +50,7 @@ export default function NavigationBar() {
   };
   return (
     <>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex',marginBottom : 10 }}>
         <CssBaseline />
         <AppBar component="nav">
           <Toolbar>
@@ -61,16 +61,17 @@ export default function NavigationBar() {
                 </Button>
                 <Button  sx={{ color: '#fff' }}>
                   Events
-                </Button>
+                </Button> 
+                {userProfile?.isAdmin ? (<Button onClick={() => navigate("/CoursesPage")} sx={{ color: '#fff' }}>Courses</Button>) : (<Typography/>)}
+              
+           
             </Box>
             <Typography
               variant="h6"
               component="div"
               sx={{ flexGrow: 2, display: { xs: 'none', sm: 'block' } }}
             >
-              {userProfile?.isAdmin ? (<Typography sx={{ color: '#fff' }}>Admin</Typography>) : (<Typography/>)}
-              
-            </Typography>
+              </Typography>
             
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
            

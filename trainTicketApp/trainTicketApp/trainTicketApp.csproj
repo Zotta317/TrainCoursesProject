@@ -7,6 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="GraphQL" Version="7.8.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.20" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.20" />
@@ -15,11 +16,13 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.14" />
+		<PackageReference Include="QuickGraph" Version="3.6.61119.7" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+		<PackageReference Include="System.Collections" Version="4.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Migrations\"/>
+		<Folder Include="Migrations\" />
 	</ItemGroup>
 
 </Project>

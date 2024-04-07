@@ -65,7 +65,7 @@ namespace trainTicketApp.Controllers
 
                     seat.Booked = true;
 
-                     await trainDbContext.SaveChangesAsync();
+                    await trainDbContext.SaveChangesAsync();
 
                     return NoContent();
             } else

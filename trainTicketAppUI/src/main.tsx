@@ -7,6 +7,7 @@ import SignIn from './components/SignIn.tsx'
 import MainPage from './components/MainPage.tsx'
 import Register from './components/Register.tsx'
 import ProfilePage from './components/ProfilePage.tsx'
+import CoursesPage from './components/CoursesPage.tsx'
 
 
 const router = createBrowserRouter([
@@ -29,6 +30,9 @@ const router = createBrowserRouter([
   {
     path : "/ProfilePage",
     element : <ProfilePage/>
+  },{
+    path : "CoursesPage",
+    element : <CoursesPage/>
   }
 ])
 ReactDOM.createRoot(document.getElementById('root')!).render(
