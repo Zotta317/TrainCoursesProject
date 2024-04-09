@@ -20,7 +20,7 @@ import { RegisterModel } from '../models/RegisterModel';
 
 const defaultTheme = createTheme();
 
-export default function SignInSide() {
+export default function Register() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmedPassword, setShowConfirmedPassword] = useState(false);

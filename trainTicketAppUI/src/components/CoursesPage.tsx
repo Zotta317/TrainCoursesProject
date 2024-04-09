@@ -11,11 +11,16 @@ export default function CoursesPage() {
     const [selectedCurrentCity, setSelectedCurrentCity] = useState<string>("");
     const [selectedDestinationCity, setSelectedDestinationCity] = useState<string>("");
 
+    const [LeavingCityPeron,setLeavingPeron] = useState<String>();
     const [trainPlatforms, setTrainPlatforms] = useState<TrainPlatform[]>();
     const filteredCities = cities.filter(city => city !== selectedCurrentCity);
     const token = localStorage.getItem("authToken");
     
-    const fetchGetPlatform = async () => {
+    
+
+    useEffect(() => {
+const fetchGetPlatform = async () => {
+        if (selectedCurrentCity !== null){
             try {
                 let url = `https://localhost:7156/api/Platform/GetPlatform?leavingCity=${selectedCurrentCity}`
                 const response = await fetch(url, {
@@ -34,13 +39,12 @@ export default function CoursesPage() {
       console.error('Error fetching data:', error);
     }
         }
-
-    useEffect(() => {
+    }
         fetchGetPlatform();
     },[selectedCurrentCity]);
 
     console.log(trainPlatforms)
-    
+
     return (
         <>
             <NavigationBar />
@@ -76,7 +80,21 @@ export default function CoursesPage() {
                         ))}
                     </Select>
                 </FormControl>
-
+                <FormControl sx={{ width: '50ch', alignSelf: "center", marginTop: 3 }}>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={LeavingCityPeron}
+                        label="Peron"
+                        onChange={(event) => { setLeavingPeron(event.target.value) }}
+                    >
+                        {trainPlatforms?.map((trainPlatform : TrainPlatform, index: number) =>(
+                            <MenuItem key = {index} value ={trainPlatform?.platformName}>
+                                    {trainPlatform?.platformName}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
                 <FormControl sx={{ width: '50ch', alignSelf: "center", marginTop: 3 }}>
                     <InputLabel id="demo-simple-select-label">Destination City</InputLabel>
                     <Select
