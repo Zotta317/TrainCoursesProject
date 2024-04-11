@@ -29,56 +29,56 @@ namespace trainTicketApp.Controllers
 
 
 
-        [HttpPost("AddTicket")]
-        public async Task<IActionResult> PostTicket(Guid courseId)
-        {
-            Identity identity = ControllerContext.GetIdentity();
+        //[HttpPost("AddTicket")]
+        //public async Task<IActionResult> PostTicket(Guid courseId)
+        //{
+        //    Identity identity = ControllerContext.GetIdentity();
 
-            var course = await trainDbContext.Course.FirstOrDefaultAsync(c => c.CourseID == courseId);
+        //    var course = await trainDbContext.Course.FirstOrDefaultAsync(c => c.CourseID == courseId);
 
-            var train = await trainDbContext.Train.FirstOrDefaultAsync(t => t.TrainID == course.TrainId);
+        //    var train = await trainDbContext.Train.FirstOrDefaultAsync(t => t.TrainID == course.TrainId);
 
-            if (train != null)
-            {
-                var seat = trainDbContext.Seat.FirstOrDefault(s => s.CourseId == courseId && s.Booked == false);
+        //    if (train != null)
+        //    {
+        //        var seat = trainDbContext.Seat.FirstOrDefault(s => s.CourseId == courseId && s.Booked == false);
 
-                if (seat != null)
-                {
+        //        if (seat != null)
+        //        {
 
-                    var ticket = new Ticket
-                    {
-                        TicketID = Guid.NewGuid(),
-                        ProfileId = identity.ID,
-                        TrainId = seat.TrainId,
-                        CarrigeId = seat.CarrigeId,
-                        SeatId = seat.SeatID,
-                        CourseId = courseId,
-                        ArrivalTime = course.ArivingTime,
-                        LeavingTime = course.LeavingTime,
-                        ArrivingCity = course.ArrivingCity,
-                        LeavingCity = course.LeavingCity,
-                        PlatformId = course.PlatformId,
+        //            var ticket = new Ticket
+        //            {
+        //                TicketID = Guid.NewGuid(),
+        //                ProfileId = identity.ID,
+        //                TrainId = seat.TrainId,
+        //                CarrigeId = seat.CarrigeId,
+        //                SeatId = seat.SeatID,
+        //                CourseId = courseId,
+        //                ArrivalTime = course.ArivingTime,
+        //                LeavingTime = course.LeavingTime,
+        //                ArrivingCity = course.ArrivingCity,
+        //                LeavingCity = course.LeavingCity,
+        //                PlatformId = course.PlatformId,
 
-                    };
+        //            };
 
-                    trainDbContext.Ticket.Add(ticket);
+        //            trainDbContext.Ticket.Add(ticket);
 
-                    seat.Booked = true;
+        //            seat.Booked = true;
 
-                    await trainDbContext.SaveChangesAsync();
+        //            await trainDbContext.SaveChangesAsync();
 
-                    return NoContent();
-            } else
-                {
-                    return NotFound("Seat not found.");
+        //            return NoContent();
+        //    } else
+        //        {
+        //            return NotFound("Seat not found.");
 
-                }
+        //        }
 
-            } else
-            {
-                return NotFound("Seat not found.");
-            }
-        }
+        //    } else
+        //    {
+        //        return NotFound("Seat not found.");
+        //    }
+        //}
 
 
         [HttpGet("AllUserTickets")]
