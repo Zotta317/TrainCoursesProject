@@ -28,7 +28,10 @@ namespace trainTicketApp.Service
 
         public  Course GetCourse(Guid courseId)
         {
-            return  _courseRepository.GetCourse(courseId);
+            var course = _courseRepository.GetCourse(courseId);
+            if (course == null) 
+                throw new NotFoundCourseException(courseId);
+            return course;
         }
 
         public async Task<Course> AddCourse(CourseAddDTO course)
