@@ -17,8 +17,11 @@
         public DateTime ArrivalTime { get; set; }
 
         public Guid CourseId { get; set; }
+
         public Guid PlatformId { get; set; }
+
         public string? LeavingCity { get; set; }
+
         public string? ArrivingCity { get; set; }
 
     }

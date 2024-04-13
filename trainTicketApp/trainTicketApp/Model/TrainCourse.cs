@@ -1,13 +1,14 @@
-﻿namespace trainTicketApp.Model
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace trainTicketApp.Model
 {
+    [Keyless]
     public class TrainCourse
     {
-        public Guid TrainCourseID {  get; set; }
-
-        public Guid TrainId { get; set; }
+        public Guid SeatId { get; set; }
 
         public Guid CourseId { get; set; }
 
-        public int availableSeats { get; set; }
+        public bool booked { get; set; }
     }
 }

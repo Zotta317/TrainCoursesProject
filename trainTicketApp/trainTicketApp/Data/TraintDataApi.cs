@@ -21,6 +21,8 @@ namespace trainTicketApp.Data
             public DbSet<Course> Course { get; set; } = default!;
 
             public DbSet<TrainPlatforms> TrainPlatforms { get; set; }
+
+            public DbSet<TrainCourse> TrainCourses { get; set; } = default!;
             public TrainDbContext(DbContextOptions<TrainDbContext> options) : base(options) { }
 
             protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -52,6 +54,10 @@ namespace trainTicketApp.Data
                 modelBuilder
                     .Entity<Course>()
                     .HasKey(r => r.CourseID);
+
+                modelBuilder
+                    .Entity<TrainCourse>()
+                    .HasNoKey();
 
                 base.OnModelCreating(modelBuilder);
 

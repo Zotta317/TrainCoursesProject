@@ -1,10 +1,8 @@
-﻿namespace trainTicketApp.Model
+﻿namespace trainTicketApp.DTOs
 {
-    public class Course
-    { 
+    public class CourseGetDTO
+    {
         public Guid CourseID { get; set; }
-
-        public Guid PlatformId { get; set; }
         public string ArrivingCity { get; set; }
 
         public string LeavingCity { get; set; }
@@ -15,6 +13,6 @@
 
         public int NumberOfSeatsAvailable { get; set; }
 
-        public Guid TrainId { get; set; }
+        public string TrainName { get; set; }
     }
 }

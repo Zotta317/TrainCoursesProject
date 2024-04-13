@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using trainTicketApp.Data;
+using trainTicketApp.DTOs;
 using trainTicketApp.Model;
-using trainTicketApp.ModelView;
-using static trainTicketApp.Data.TraintDataApi;
+using trainTicketApp.Service;
 
 namespace trainTicketApp.Controllers
 {
@@ -14,116 +12,33 @@ namespace trainTicketApp.Controllers
     [ApiController]
     public class CourseController : Controller
     {
-        private readonly TraintDataApi.TrainDbContext trainDbContext;
+        private readonly ICourseService _courseService;
 
-        public CourseController(TraintDataApi.TrainDbContext dbContext)
+        public CourseController(ICourseService courseService)
         {
-            trainDbContext = dbContext;
+            _courseService = courseService;
         }
 
-        //[HttpGet("GetAllCourses")]
-        //public IActionResult GetAllCourses(String selectedLeavingTime)
-        //{
+        [HttpGet]
+        public ActionResult<List<CourseGetDTO>> GetCourses()
+        {
+            var courses = _courseService.GetCourses();
+            return Ok(courses);
+        }
 
-        //    var selectedDate = DateTime.Parse(selectedLeavingTime);
-        //    var query = trainDbContext.Course.Where(c => c.LeavingTime >= selectedDate);
-            
-        //    var courses = query.Select(c => new CourseView
-        //    {
-        //        CourseID = c.CourseID,
-        //        LeavingCity = c.LeavingCity,
-        //        ArrivingCity = c.ArrivingCity,
-        //        LeavingTime = c.LeavingTime,
-        //        ArrivingTime = c.ArivingTime,
-        //        AvailableTrainSeats = trainDbContext.Seat
-        //                             .Count(s => s.Booked == false && s.CourseId == c.CourseID),
-        //        TrainName = trainDbContext.Train.FirstOrDefault(t => t.TrainID == c.TrainId).TrainName,
-        //    }).ToList();
+        [HttpGet("{id}")]
+        public ActionResult<Course> GetCourse(Guid id)
+        {
+            var course = _courseService.GetCourse(id);
+            return Ok(course);
+        }
 
-
-        //    //var courses = (from course in trainDbContext.Course
-        //    //   join train in trainDbContext.Train on course.TrainId equals train.TrainID
-        //    //   select new CourseView
-        //    //   {
-        //    //       CourseID = course.CourseID,
-        //    //       LeavingCity = course.LeavingCity,
-        //    //       ArrivingCity = course.ArrivingCity,
-        //    //       LeavingTime = course.LeavingTime,
-        //    //       ArrivingTime = course.ArivingTime,
-        //    //       AvailableTrainSeats = trainDbContext.Seat
-        //    //                      .Count(s => s.Booked == false && s.CourseId == course.CourseID),
-        //    //       TrainName = train.TrainName,
-        //    //   }).ToList();
-
-        //    return Ok(courses);
-        //}
-
-
-
-        //[HttpPost("AddCourses")]
-        //public async Task<IActionResult> AddCourse(CourseInput courseInput)
-        //{
-        //    var train = await trainDbContext.Train.FirstOrDefaultAsync(s => s.TrainName == courseInput.TrainName);
-
-        //    if (train != null)
-        //    {
-        //        //Service sa adaug validari 
-        //        var course = new Course
-        //        {
-        //            CourseID = Guid.NewGuid(),
-        //            LeavingCity = courseInput.LeavingCity,
-        //            ArrivingCity = courseInput.ArrivingCity,
-        //            LeavingTime = courseInput.LeavingTime,
-        //            ArivingTime = courseInput.ArivingTime,
-        //            TrainId = train.TrainID,
-        //            PlatformId = courseInput.PlatformId,
-        //            NumberOfSeatsAvailable = train.NumberOfSeats
-        //        };
-
-
-
-        //        trainDbContext.Course.Add(course);
-
-        //        await trainDbContext.SaveChangesAsync();
-
-        //        await AddSeatsForCourse(course.CourseID, train.TrainID);
-
-        //        return NoContent();
-
-        //    }
-        //    else
-        //    {
-        //        return NotFound("Train not found.");
-        //    }
-        //}
-
-        //private async Task AddSeatsForCourse(Guid courseId, Guid trainId)
-        //{
-        //    var carriages = await trainDbContext.Carrige.Where(c => c.TrainId == trainId).ToListAsync();
-            
-        //    foreach (var carriage in carriages)
-        //    {
-               
-        //        for (int seatNumber = 1; seatNumber <= carriage.AvailableSeats; seatNumber++)
-        //        {
-        //            var seat = new Seat
-        //            {
-        //                SeatID = Guid.NewGuid(),
-        //                SeatName = $"Seat {seatNumber}",
-        //                CarrigeId = carriage.CarrigeID,
-        //                Booked = false,
-        //                TrainId = trainId,
-        //                CourseId = courseId
-        //            };
-
-        //            trainDbContext.Seat.Add(seat);
-        //        }
-
-                
-        //    }
-
-        //    await trainDbContext.SaveChangesAsync();
-        //}
+        [HttpPost("AddCourses")]
+        public async Task<IActionResult> AddCourse(CourseAddDTO course)
+        {
+            var newCourse = await _courseService.AddCourse(course);
+            return CreatedAtAction(nameof(AddCourse), course);
+         }
 
     }
 
