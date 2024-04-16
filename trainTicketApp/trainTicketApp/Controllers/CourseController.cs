@@ -33,12 +33,19 @@ namespace trainTicketApp.Controllers
             return Ok(course);
         }
 
+        [HttpGet("{date}")]
+        public ActionResult<Course> GetCourseByDate(DateTime date)
+        {
+            var course = _courseService.GetCoursesByDate(date);
+            return Ok(course);
+        }
+
         [HttpPost("AddCourses")]
         public async Task<IActionResult> AddCourse(CourseAddDTO course)
         {
             var newCourse = await _courseService.AddCourse(course);
-            return CreatedAtAction(nameof(AddCourse), course);
-         }
+            return CreatedAtAction(nameof(AddCourse), newCourse);
+        }
 
     }
 

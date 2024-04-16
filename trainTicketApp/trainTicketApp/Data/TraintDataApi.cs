@@ -57,7 +57,7 @@ namespace trainTicketApp.Data
 
                 modelBuilder
                     .Entity<TrainCourse>()
-                    .HasNoKey();
+                    .HasKey(tc => new { tc.SeatId, tc.CourseId }); ;
 
                 base.OnModelCreating(modelBuilder);
 
@@ -111,102 +111,102 @@ namespace trainTicketApp.Data
                 modelBuilder.Entity<Carrige>().HasData(carriges);
 
                 //Train 1
-                //Guid SeatIDA1 = Guid.Parse("525CF6A0-644E-33CB-BC08-E12C5266B8A7");
-                //Guid SeatIDA2 = Guid.Parse("813A3DB7-F01A-4482-914A-BCE5A4D638BB");
-                //Guid SeatIDA3 = Guid.Parse("002BE73C-0C94-4F61-9776-3350E27453C8");
+                Guid SeatIDA1 = Guid.Parse("525CF6A0-644E-33CB-BC08-E12C5266B8A7");
+                Guid SeatIDA2 = Guid.Parse("813A3DB7-F01A-4482-914A-BCE5A4D638BB");
+                Guid SeatIDA3 = Guid.Parse("002BE73C-0C94-4F61-9776-3350E27453C8");
 
-                //Guid SeatIDA4 = Guid.Parse("43165ED7-4812-4659-8901-0F6F70CD5856");
-                //Guid SeatIDA5 = Guid.Parse("17D3DD2E-63F1-47DD-9E59-F3E489894954");
-                //Guid SeatIDA6 = Guid.Parse("88FB29E9-53AD-490F-BF06-66BF0E7E9A19");
+                Guid SeatIDA4 = Guid.Parse("43165ED7-4812-4659-8901-0F6F70CD5856");
+                Guid SeatIDA5 = Guid.Parse("17D3DD2E-63F1-47DD-9E59-F3E489894954");
+                Guid SeatIDA6 = Guid.Parse("88FB29E9-53AD-490F-BF06-66BF0E7E9A19");
 
-                //Guid SeatIDA7 = Guid.Parse("6DBE5A17-DD43-4299-BD09-0F89B40326D0");
-                //Guid SeatIDA8 = Guid.Parse("AD9AA746-05DF-40D4-8880-677D4F026B81");
-                //Guid SeatIDA9 = Guid.Parse("9D0F9F2F-3840-4329-93CE-693329BB0BC1");
+                Guid SeatIDA7 = Guid.Parse("6DBE5A17-DD43-4299-BD09-0F89B40326D0");
+                Guid SeatIDA8 = Guid.Parse("AD9AA746-05DF-40D4-8880-677D4F026B81");
+                Guid SeatIDA9 = Guid.Parse("9D0F9F2F-3840-4329-93CE-693329BB0BC1");
 
 
-                ////Train 2
-                //Guid SeatIDB1 = Guid.Parse("EA803373-4BD7-4F6D-9511-0C2CA0E2239F");
-                //Guid SeatIDB2 = Guid.Parse("0B882CD9-C7F6-4E46-853F-05E966D644BA");
-                //Guid SeatIDB3 = Guid.Parse("554321FC-9D5C-47F6-9F79-B3FA70CF08EA");
-                //Guid SeatIDB4 = Guid.Parse("DAA7EB6D-6E8E-4AE7-A342-2884861275D0");
+                //Train 2
+                Guid SeatIDB1 = Guid.Parse("EA803373-4BD7-4F6D-9511-0C2CA0E2239F");
+                Guid SeatIDB2 = Guid.Parse("0B882CD9-C7F6-4E46-853F-05E966D644BA");
+                Guid SeatIDB3 = Guid.Parse("554321FC-9D5C-47F6-9F79-B3FA70CF08EA");
+                Guid SeatIDB4 = Guid.Parse("DAA7EB6D-6E8E-4AE7-A342-2884861275D0");
 
-                //Guid SeatIDB5 = Guid.Parse("CDB585B4-55BA-4AEA-B5A5-9A47D8EF68F7");
-                //Guid SeatIDB6 = Guid.Parse("B51224FF-B75C-4E04-9A12-0E8BF96A43D5");
-                //Guid SeatIDB7 = Guid.Parse("B2E10C30-8E6C-40FD-89A7-9627BF5FE541");
-                //Guid SeatIDB8 = Guid.Parse("7BEE3EF2-6033-4E25-89BF-FDC8E9494E2C");
+                Guid SeatIDB5 = Guid.Parse("CDB585B4-55BA-4AEA-B5A5-9A47D8EF68F7");
+                Guid SeatIDB6 = Guid.Parse("B51224FF-B75C-4E04-9A12-0E8BF96A43D5");
+                Guid SeatIDB7 = Guid.Parse("B2E10C30-8E6C-40FD-89A7-9627BF5FE541");
+                Guid SeatIDB8 = Guid.Parse("7BEE3EF2-6033-4E25-89BF-FDC8E9494E2C");
 
-                //Guid SeatIDB9 = Guid.Parse("EED81CD4-5958-4872-8E0A-DA1CA0AC368A");
-                //Guid SeatIDB10 = Guid.Parse("D9EBADDE-29E9-4121-AA55-D22817C601E9");
-                //Guid SeatIDB11 = Guid.Parse("A9D3B0D4-2594-4949-ACAE-B542413600AA");
-                //Guid SeatIDB12 = Guid.Parse("4BC6FA95-7B90-44FB-A758-696176DB4109");
+                Guid SeatIDB9 = Guid.Parse("EED81CD4-5958-4872-8E0A-DA1CA0AC368A");
+                Guid SeatIDB10 = Guid.Parse("D9EBADDE-29E9-4121-AA55-D22817C601E9");
+                Guid SeatIDB11 = Guid.Parse("A9D3B0D4-2594-4949-ACAE-B542413600AA");
+                Guid SeatIDB12 = Guid.Parse("4BC6FA95-7B90-44FB-A758-696176DB4109");
 
-                //Guid SeatIDB13 = Guid.Parse("24CAF5D7-E2DB-44B1-B145-E2EAB29A22A3");
-                //Guid SeatIDB14 = Guid.Parse("E71F128B-5AA1-49B3-AF04-618808D0A6AF");
-                //Guid SeatIDB15 = Guid.Parse("B53A0C7D-1405-4A68-A6A6-A9CF7AF6A3A7");
-                //Guid SeatIDB16 = Guid.Parse("C5A40B9A-5D93-4223-95CF-0090BD3BD0FB");
+                Guid SeatIDB13 = Guid.Parse("24CAF5D7-E2DB-44B1-B145-E2EAB29A22A3");
+                Guid SeatIDB14 = Guid.Parse("E71F128B-5AA1-49B3-AF04-618808D0A6AF");
+                Guid SeatIDB15 = Guid.Parse("B53A0C7D-1405-4A68-A6A6-A9CF7AF6A3A7");
+                Guid SeatIDB16 = Guid.Parse("C5A40B9A-5D93-4223-95CF-0090BD3BD0FB");
 
-                ////Train 3
-                //Guid SeatIDC1 = Guid.Parse("FF6370B6-C194-4ACC-8EF9-70339FB5FA13");
-                //Guid SeatIDC2 = Guid.Parse("7915717F-20A2-4F03-AC6C-21D3CD326A04");
-                //Guid SeatIDC3 = Guid.Parse("454333DD-D175-47DC-ACB1-9312F6E7376A");
+                //Train 3
+                Guid SeatIDC1 = Guid.Parse("FF6370B6-C194-4ACC-8EF9-70339FB5FA13");
+                Guid SeatIDC2 = Guid.Parse("7915717F-20A2-4F03-AC6C-21D3CD326A04");
+                Guid SeatIDC3 = Guid.Parse("454333DD-D175-47DC-ACB1-9312F6E7376A");
 
-                //Guid SeatIDC4 = Guid.Parse("520DE61F-DC9E-4747-8B1C-42AA70979BFF");
-                //Guid SeatIDC5 = Guid.Parse("9A4B7F11-6E29-4ED2-939C-B5C44C47CE33");
-                //Guid SeatIDC6 = Guid.Parse("2C922EC6-C82A-4FD5-AFD1-E379E7B63B80");
+                Guid SeatIDC4 = Guid.Parse("520DE61F-DC9E-4747-8B1C-42AA70979BFF");
+                Guid SeatIDC5 = Guid.Parse("9A4B7F11-6E29-4ED2-939C-B5C44C47CE33");
+                Guid SeatIDC6 = Guid.Parse("2C922EC6-C82A-4FD5-AFD1-E379E7B63B80");
 
-                //Guid SeatIDC7 = Guid.Parse("AFC39E45-E4D6-4666-9159-1494C1A18A39");
-                //Guid SeatIDC8 = Guid.Parse("1B155670-A5AB-44CD-A2A0-BF265453E663");
+                Guid SeatIDC7 = Guid.Parse("AFC39E45-E4D6-4666-9159-1494C1A18A39");
+                Guid SeatIDC8 = Guid.Parse("1B155670-A5AB-44CD-A2A0-BF265453E663");
 
-                //Seat[] seats = new Seat[33]
-                //{
-                //    //Train 1
-                //    new Seat { SeatId = SeatIDA1, SeatName = "A1",  CarrigeId = CarrigeID11,Booked = false, TrainID = Train1 },
-                //    new Seat { SeatId = SeatIDA2, SeatName = "A2" , CarrigeId = CarrigeID11,Booked = false, TrainID = Train1 },
-                //    new Seat { SeatId = SeatIDA3, SeatName = "A3",  CarrigeId = CarrigeID11,Booked = false, TrainID = Train1 },
+                Seat[] seats = new Seat[33]
+                {
+                    //Train 1
+                    new Seat { SeatID = SeatIDA1, SeatName = "A1",  CarrigeId = CarrigeID11, TrainId = Train1 },
+                    new Seat { SeatID = SeatIDA2, SeatName = "A2" , CarrigeId = CarrigeID11, TrainId = Train1 },
+                    new Seat { SeatID = SeatIDA3, SeatName = "A3",  CarrigeId = CarrigeID11, TrainId = Train1 },
 
-                //    new Seat { SeatId = SeatIDA4, SeatName = "A4" , CarrigeId = CarrigeID12 ,Booked = false, TrainID = Train1},
-                //    new Seat { SeatId = SeatIDA5, SeatName = "A5",  CarrigeId = CarrigeID12 ,Booked = false, TrainID = Train1},
-                //    new Seat { SeatId = SeatIDA6, SeatName = "A6" , CarrigeId = CarrigeID12 ,Booked = false, TrainID = Train1},
+                    new Seat { SeatID = SeatIDA4, SeatName = "A4" , CarrigeId = CarrigeID12 , TrainId = Train1},
+                    new Seat { SeatID = SeatIDA5, SeatName = "A5",  CarrigeId = CarrigeID12 , TrainId = Train1},
+                    new Seat { SeatID = SeatIDA6, SeatName = "A6" , CarrigeId = CarrigeID12 , TrainId = Train1},
 
-                //    new Seat { SeatId = SeatIDA7, SeatName = "A7" , CarrigeId = CarrigeID13 ,Booked = false, TrainID = Train1},
-                //    new Seat { SeatId = SeatIDA8, SeatName = "A8" , CarrigeId = CarrigeID13 ,Booked = false, TrainID = Train1},
-                //    new Seat { SeatId = SeatIDA9, SeatName = "A9" , CarrigeId = CarrigeID13 ,Booked = false, TrainID = Train1},
+                    new Seat { SeatID = SeatIDA7, SeatName = "A7" , CarrigeId = CarrigeID13 , TrainId = Train1},
+                    new Seat { SeatID = SeatIDA8, SeatName = "A8" , CarrigeId = CarrigeID13 , TrainId = Train1},
+                    new Seat { SeatID = SeatIDA9, SeatName = "A9" , CarrigeId = CarrigeID13 , TrainId = Train1},
 
-                //    //Train 2
-                //    new Seat { SeatId = SeatIDB1, SeatName = "B1" , CarrigeId = CarrigeID21 ,Booked = false, TrainID = Train2},
-                //    new Seat { SeatId = SeatIDB2, SeatName = "B2" , CarrigeId = CarrigeID21 ,Booked = false, TrainID = Train2},
-                //    new Seat { SeatId = SeatIDB3, SeatName = "B3" , CarrigeId = CarrigeID21 ,Booked = false, TrainID = Train2},
-                //    new Seat { SeatId = SeatIDB4, SeatName = "B4" , CarrigeId = CarrigeID21 ,Booked = false, TrainID = Train2},
+                    //Train 2
+                    new Seat { SeatID = SeatIDB1, SeatName = "B1" , CarrigeId = CarrigeID21 , TrainId = Train2},
+                    new Seat { SeatID = SeatIDB2, SeatName = "B2" , CarrigeId = CarrigeID21 , TrainId = Train2},
+                    new Seat { SeatID = SeatIDB3, SeatName = "B3" , CarrigeId = CarrigeID21 , TrainId = Train2},
+                    new Seat { SeatID = SeatIDB4, SeatName = "B4" , CarrigeId = CarrigeID21 , TrainId = Train2},
 
-                //    new Seat { SeatId = SeatIDB5, SeatName = "B5" , CarrigeId = CarrigeID22 ,Booked = false, TrainID = Train2},
-                //    new Seat { SeatId = SeatIDB6, SeatName = "B6" , CarrigeId = CarrigeID22 ,Booked = false, TrainID = Train2},
-                //    new Seat { SeatId = SeatIDB7, SeatName = "B7" , CarrigeId = CarrigeID22 ,Booked = false, TrainID = Train2},
-                //    new Seat { SeatId = SeatIDB8, SeatName = "B8" , CarrigeId = CarrigeID22 ,Booked = false, TrainID = Train2},
+                    new Seat { SeatID = SeatIDB5, SeatName = "B5" , CarrigeId = CarrigeID22 , TrainId = Train2},
+                    new Seat { SeatID = SeatIDB6, SeatName = "B6" , CarrigeId = CarrigeID22 , TrainId = Train2},
+                    new Seat { SeatID = SeatIDB7, SeatName = "B7" , CarrigeId = CarrigeID22 , TrainId = Train2},
+                    new Seat { SeatID = SeatIDB8, SeatName = "B8" , CarrigeId = CarrigeID22 , TrainId = Train2},
 
-                //    new Seat { SeatId = SeatIDB9, SeatName = "B9" , CarrigeId = CarrigeID23 ,Booked = false, TrainID = Train2},
-                //    new Seat { SeatId = SeatIDB10, SeatName = "B10", CarrigeId = CarrigeID23 ,Booked = false, TrainID = Train2},
-                //    new Seat { SeatId = SeatIDB11, SeatName = "B11" , CarrigeId = CarrigeID23 ,Booked = false, TrainID = Train2},
-                //    new Seat { SeatId = SeatIDB12, SeatName = "B12" , CarrigeId = CarrigeID23 ,Booked = false, TrainID = Train2},
+                    new Seat { SeatID = SeatIDB9, SeatName = "B9" , CarrigeId = CarrigeID23 , TrainId = Train2},
+                    new Seat { SeatID = SeatIDB10, SeatName = "B10", CarrigeId = CarrigeID23 , TrainId = Train2},
+                    new Seat { SeatID = SeatIDB11, SeatName = "B11" , CarrigeId = CarrigeID23 , TrainId = Train2},
+                    new Seat { SeatID = SeatIDB12, SeatName = "B12" , CarrigeId = CarrigeID23 , TrainId = Train2},
 
-                //    new Seat { SeatId = SeatIDB13, SeatName = "B13" , CarrigeId = CarrigeID24 ,Booked = false, TrainID = Train2},
-                //    new Seat { SeatId = SeatIDB14, SeatName = "B14", CarrigeId = CarrigeID24 ,Booked = false, TrainID = Train2},
-                //    new Seat { SeatId = SeatIDB15, SeatName = "B15" , CarrigeId = CarrigeID24 ,Booked = false, TrainID = Train2},
-                //    new Seat { SeatId = SeatIDB16, SeatName = "B16" , CarrigeId = CarrigeID24 ,Booked = false, TrainID = Train2},
+                    new Seat { SeatID = SeatIDB13, SeatName = "B13" , CarrigeId = CarrigeID24 , TrainId = Train2},
+                    new Seat { SeatID = SeatIDB14, SeatName = "B14", CarrigeId = CarrigeID24 , TrainId = Train2},
+                    new Seat { SeatID = SeatIDB15, SeatName = "B15" , CarrigeId = CarrigeID24 , TrainId = Train2},
+                    new Seat { SeatID = SeatIDB16, SeatName = "B16" , CarrigeId = CarrigeID24 , TrainId = Train2},
 
-                //    //Train 3
-                //    new Seat { SeatId = SeatIDC1, SeatName = "C1" , CarrigeId = CarrigeID31 ,Booked = false, TrainID = Train3},
-                //    new Seat { SeatId = SeatIDC2, SeatName = "C2" , CarrigeId = CarrigeID31 ,Booked = false, TrainID = Train3},
-                //    new Seat { SeatId = SeatIDC3, SeatName = "C3" , CarrigeId = CarrigeID31 ,Booked = false, TrainID = Train3},
+                    //Train 3
+                    new Seat { SeatID = SeatIDC1, SeatName = "C1" , CarrigeId = CarrigeID31 , TrainId = Train3},
+                    new Seat { SeatID = SeatIDC2, SeatName = "C2" , CarrigeId = CarrigeID31 , TrainId = Train3},
+                    new Seat { SeatID = SeatIDC3, SeatName = "C3" , CarrigeId = CarrigeID31 , TrainId = Train3},
 
-                //    new Seat { SeatId = SeatIDC4, SeatName = "C4" , CarrigeId = CarrigeID32 ,Booked = false, TrainID = Train3},
-                //    new Seat { SeatId = SeatIDC5, SeatName = "C5" , CarrigeId = CarrigeID32 ,Booked = false, TrainID = Train3},
-                //    new Seat { SeatId = SeatIDC6, SeatName = "C6" , CarrigeId = CarrigeID32 ,Booked = false, TrainID = Train3},
+                    new Seat { SeatID = SeatIDC4, SeatName = "C4" , CarrigeId = CarrigeID32 , TrainId = Train3},
+                    new Seat { SeatID = SeatIDC5, SeatName = "C5" , CarrigeId = CarrigeID32 , TrainId = Train3},
+                    new Seat { SeatID = SeatIDC6, SeatName = "C6" , CarrigeId = CarrigeID32 , TrainId = Train3},
 
-                //    new Seat { SeatId = SeatIDC7, SeatName = "C7" , CarrigeId = CarrigeID33 ,Booked = false, TrainID = Train3},
-                //    new Seat { SeatId = SeatIDC8, SeatName = "C8" , CarrigeId = CarrigeID33 ,Booked = false, TrainID = Train3},
-                //};
-                //
-               // modelBuilder.Entity<Seat>().HasData(seats);
+                    new Seat { SeatID = SeatIDC7, SeatName = "C7" , CarrigeId = CarrigeID33 , TrainId = Train3},
+                    new Seat { SeatID = SeatIDC8, SeatName = "C8" , CarrigeId = CarrigeID33 , TrainId = Train3},
+                };
+
+                modelBuilder.Entity<Seat>().HasData(seats);
             }
         }
     }

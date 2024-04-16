@@ -10,20 +10,29 @@ namespace trainTicketApp.Service
         List<CourseGetDTO> GetCourses();
         Course GetCourse(Guid courseId);
 
+        List<CourseGetDTO> GetCoursesByDate(DateTime date);
+
         Task<Course> AddCourse(CourseAddDTO course);
     }
     public class CourseService : ICourseService
     {
         private readonly CourseRepository _courseRepository;
+        private readonly TrainCourseRepository _trainCourseRepository;
 
-        public CourseService(CourseRepository courseRepository)
+        public CourseService(CourseRepository courseRepository, TrainCourseRepository trainCourseRepository)
         {
             _courseRepository = courseRepository;
+            _trainCourseRepository = trainCourseRepository;
         }
 
         public List<CourseGetDTO> GetCourses()
         {
             return _courseRepository.GetCourses();
+        }
+
+        public List<CourseGetDTO> GetCoursesByDate(DateTime selectedDate)
+        {
+            return _courseRepository.GetCoursesByDate(selectedDate);
         }
 
         public  Course GetCourse(Guid courseId)

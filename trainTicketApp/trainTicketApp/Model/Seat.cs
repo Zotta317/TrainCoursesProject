@@ -8,5 +8,7 @@
 
         public Guid CarrigeId { get; set; }
 
+        public Guid TrainId { get; set; }
+
     }
 }

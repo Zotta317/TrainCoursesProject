@@ -14,6 +14,8 @@
 
         public string? EmailAddress { get; set; } = default!;
 
+        public List<Ticket> Tickets { get; set; } 
+
         public bool IsAdmin { get; set; }
     }
 }

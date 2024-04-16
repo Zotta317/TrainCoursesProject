@@ -9,6 +9,6 @@ namespace trainTicketApp.Model
 
         public Guid CourseId { get; set; }
 
-        public bool booked { get; set; }
+        public bool Booked { get; set; }
     }
 }

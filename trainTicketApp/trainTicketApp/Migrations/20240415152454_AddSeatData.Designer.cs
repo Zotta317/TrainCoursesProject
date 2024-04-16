@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using trainTicketApp.Data;
 
@@ -11,9 +12,10 @@ using trainTicketApp.Data;
 namespace trainTicketApp.Migrations
 {
     [DbContext(typeof(TraintDataApi.TrainDbContext))]
-    partial class TrainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240415152454_AddSeatData")]
+    partial class AddSeatData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -712,16 +714,14 @@ namespace trainTicketApp.Migrations
 
             modelBuilder.Entity("trainTicketApp.Model.TrainCourse", b =>
                 {
-                    b.Property<Guid>("SeatId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<bool>("Booked")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("Booked")
-                        .HasColumnType("bit");
-
-                    b.HasKey("SeatId", "CourseId");
+                    b.Property<Guid>("SeatId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.ToTable("TrainCourses");
                 });
