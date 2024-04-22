@@ -57,7 +57,7 @@ namespace trainTicketApp.Repository
 
         public List<CourseGetDTO> GetCoursesByDate(DateTime selectedDate)
         {
-            var courses = trainDbContext.Course.Where(c => c.LeavingTime.Date == selectedDate.Date).ToList();
+            var courses = trainDbContext.Course.Where(c => c.LeavingTime.Date >= selectedDate.Date).ToList();
             var courseDtos = new List<CourseGetDTO>();
 
             foreach (var course in courses)
