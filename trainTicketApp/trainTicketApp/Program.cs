@@ -19,7 +19,10 @@ builder.Services.AddScoped<TrainRepository>();
 builder.Services.AddScoped<CourseRepository>();
 builder.Services.AddScoped<TicketRepository>();
 builder.Services.AddScoped<SeatRepository>();
+builder.Services.AddScoped<CarrigeRepository>();
+builder.Services.AddScoped<ProfileRepository>();
 builder.Services.AddScoped<TrainCourseRepository>();
+builder.Services.AddScoped<PlatformRepository>();
 
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();

@@ -1,5 +1,5 @@
 import { Box, Divider, Stack, TextField, Typography } from "@mui/material";
-import NavigationBar from "./NavigationBar";
+import NavigationBar from "./NavigationBar/NavigationBar";
 import { TicketView } from "../models/TicketView";
 import { useEffect, useState } from "react";
 import React from "react";

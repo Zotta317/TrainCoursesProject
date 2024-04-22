@@ -22,7 +22,7 @@ namespace trainTicketApp.Repository
             return _trainDbContext.Seat.FirstOrDefault(s => s.SeatID == seatId);
         }
 
-        public string GetSeatName(Guid seatId)
+        public string GetSeatNameById(Guid seatId)
         {
             return _trainDbContext.Seat.FirstOrDefault(s => s.SeatID == seatId).SeatName;
         }

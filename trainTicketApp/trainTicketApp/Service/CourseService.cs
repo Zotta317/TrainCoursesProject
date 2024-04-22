@@ -7,7 +7,7 @@ namespace trainTicketApp.Service
 {
     public interface ICourseService
     {
-        List<CourseGetDTO> GetCourses();
+        List<CourseGetDTO> GetAllCourses();
         Course GetCourse(Guid courseId);
 
         List<CourseGetDTO> GetCoursesByDate(DateTime date);
@@ -25,9 +25,9 @@ namespace trainTicketApp.Service
             _trainCourseRepository = trainCourseRepository;
         }
 
-        public List<CourseGetDTO> GetCourses()
+        public List<CourseGetDTO> GetAllCourses()
         {
-            return _courseRepository.GetCourses();
+            return _courseRepository.GetAllCourses();
         }
 
         public List<CourseGetDTO> GetCoursesByDate(DateTime selectedDate)
@@ -37,10 +37,8 @@ namespace trainTicketApp.Service
 
         public  Course GetCourse(Guid courseId)
         {
-            var course = _courseRepository.GetCourse(courseId);
-            if (course == null) 
-                throw new NotFoundCourseException(courseId);
-            return course;
+            var course = _courseRepository.GetCourseById(courseId);
+            return course == null ? throw new NotFoundCourseException(courseId) : course;
         }
 
         public async Task<Course> AddCourse(CourseAddDTO course)

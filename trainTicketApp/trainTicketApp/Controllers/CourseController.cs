@@ -22,7 +22,7 @@ namespace trainTicketApp.Controllers
         [HttpGet]
         public ActionResult<List<CourseGetDTO>> GetCourses()
         {
-            var courses = _courseService.GetCourses();
+            var courses = _courseService.GetAllCourses();
             return Ok(courses);
         }
 

@@ -1,9 +1,9 @@
 import { Avatar, Box, Grid, Paper, Typography } from '@mui/material';
 import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
 import SignInForm from './SignInForm';
-import BackgroundImage from './BackgroundImage';
+import BackgroundImage from '../Backgorund/BackgroundImage';
 // import BackgroundImage from './BackgroundImage';
-
+// import  BackgroundImage  from '../Backgorund/BackgroundImage';
 const SignInContainer = ({ onSubmit, navigate } : any) => {
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>

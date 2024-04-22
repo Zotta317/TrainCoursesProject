@@ -6,25 +6,28 @@ namespace trainTicketApp.Repository
 {
     public interface ICourseRepository
     {
-        public List<CourseGetDTO> GetCourses();
+        public List<CourseGetDTO> GetAllCourses();
         public List<CourseGetDTO> GetCoursesByDate(DateTime selectedDate);
-        public Course GetCourse(Guid courseId);
-        public  Task<Course> AddCourse(CourseAddDTO course); 
+        public Course GetCourseById(Guid courseId);
+        public Task<Course> AddCourse(CourseAddDTO course);
     }
     public class CourseRepository : ICourseRepository
     {
         private readonly TrainDbContext trainDbContext;
         private readonly TrainRepository _trainRepository;
         private readonly TrainCourseRepository _trainCourseRepository;
+        private readonly PlatformRepository _platformRepository;
 
-        public CourseRepository(TrainDbContext context, TrainRepository trainRepository, TrainCourseRepository trainCourseRepository)
+
+        public CourseRepository(TrainDbContext context, TrainRepository trainRepository, TrainCourseRepository trainCourseRepository, PlatformRepository platformRepository)
         {
             trainDbContext = context;
             _trainRepository = trainRepository;
             _trainCourseRepository = trainCourseRepository;
+            _platformRepository = platformRepository;
         }
 
-        public List<CourseGetDTO> GetCourses()
+        public List<CourseGetDTO> GetAllCourses()
         {
             var courses = trainDbContext.Course.Where(c => c.LeavingTime >= DateTime.Now).ToList();
             var courseDtos = new List<CourseGetDTO>();
@@ -33,11 +36,13 @@ namespace trainTicketApp.Repository
             {
                 var trainName = _trainRepository.GetTrainName(course.TrainId);
                 var availableSeats = _trainCourseRepository.GetAvailableSeats(course.CourseID);
+                var LCity = _platformRepository.GetPlatformCity(course.LeavingCity);
+                var ACity = _platformRepository.GetPlatformCity(course.ArrivingCity);
                 var courseDto = new CourseGetDTO
                 {
                     CourseID = course.CourseID,
-                    LeavingCity = course.LeavingCity,
-                    ArrivingCity = course.ArrivingCity,
+                    LeavingCity = LCity,
+                    ArrivingCity = ACity,
                     LeavingTime = course.LeavingTime,
                     ArivingTime = course.ArivingTime,
                     NumberOfSeatsAvailable = availableSeats,
@@ -59,11 +64,14 @@ namespace trainTicketApp.Repository
             {
                 var trainName = _trainRepository.GetTrainName(course.TrainId);
                 var availableSeats = _trainCourseRepository.GetAvailableSeats(course.CourseID);
+
+                var LCity = _platformRepository.GetPlatformCity(course.LeavingCity);
+                var ACity = _platformRepository.GetPlatformCity(course.ArrivingCity);
                 var courseDto = new CourseGetDTO
                 {
                     CourseID = course.CourseID,
-                    LeavingCity = course.LeavingCity,
-                    ArrivingCity = course.ArrivingCity,
+                    LeavingCity = LCity,
+                    ArrivingCity = ACity,
                     LeavingTime = course.LeavingTime,
                     ArivingTime = course.ArivingTime,
                     NumberOfSeatsAvailable = availableSeats,
@@ -76,15 +84,13 @@ namespace trainTicketApp.Repository
             return courseDtos;
         }
 
-        public Course GetCourse(Guid id)
+        public Course GetCourseById(Guid id)
         {
             return trainDbContext.Course.FirstOrDefault(c => c.CourseID == id);
         }
 
         public async Task<Course> AddCourse(CourseAddDTO course)
         {
-            var availableSeats = trainDbContext.Train.FirstOrDefault(t => t.TrainID == course.TrainId).NumberOfSeats;
-            
             var courseToAdd = new Course
             {
                 CourseID = new Guid(),
@@ -92,12 +98,11 @@ namespace trainTicketApp.Repository
                 ArrivingCity = course.ArrivingCity,
                 LeavingTime = course.LeavingTime,
                 ArivingTime = course.ArivingTime,
-                NumberOfSeatsAvailable = availableSeats,
                 TrainId = course.TrainId,
             };
 
             await trainDbContext.Course.AddAsync(courseToAdd);
-            await _trainCourseRepository.CreateTrainCoursesSeats(courseToAdd);
+            await _trainCourseRepository.AddTrainCoursesSeats(courseToAdd);
             await trainDbContext.SaveChangesAsync();
             return courseToAdd;
         } 

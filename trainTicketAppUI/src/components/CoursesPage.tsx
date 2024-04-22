@@ -1,5 +1,5 @@
 import { Box, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
-import NavigationBar from "./NavigationBar";
+import NavigationBar from "./NavigationBar/NavigationBar";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
@@ -11,37 +11,37 @@ export default function CoursesPage() {
     const [selectedCurrentCity, setSelectedCurrentCity] = useState<string>("");
     const [selectedDestinationCity, setSelectedDestinationCity] = useState<string>("");
 
-    const [LeavingCityPeron,setLeavingPeron] = useState<String>();
+    const [LeavingCityPeron, setLeavingPeron] = useState<String>();
     const [trainPlatforms, setTrainPlatforms] = useState<TrainPlatform[]>();
     const filteredCities = cities.filter(city => city !== selectedCurrentCity);
     const token = localStorage.getItem("authToken");
-    
-    
+
+
 
     useEffect(() => {
-const fetchGetPlatform = async () => {
-        if (selectedCurrentCity !== null){
-            try {
-                let url = `https://localhost:7156/api/Platform/GetPlatform?leavingCity=${selectedCurrentCity}`
-                const response = await fetch(url, {
-                    method: "Get",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+        const fetchGetPlatform = async () => {
+            if (selectedCurrentCity !== null) {
+                try {
+                    let url = `https://localhost:7156/api/Platform/GetPlatform?leavingCity=${selectedCurrentCity}`
+                    const response = await fetch(url, {
+                        method: "Get",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
 
-                if(!response.ok){
-                    throw new Error('Network response was not ok');
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    const data = await response.json();
+                    setTrainPlatforms(data);
+                } catch (error) {
+                    console.error('Error fetching data:', error);
                 }
-                const data = await response.json();
-                setTrainPlatforms(data);
-            }catch (error) {
-      console.error('Error fetching data:', error);
-    }
+            }
         }
-    }
         fetchGetPlatform();
-    },[selectedCurrentCity]);
+    }, [selectedCurrentCity]);
 
     console.log(trainPlatforms)
 
@@ -88,9 +88,9 @@ const fetchGetPlatform = async () => {
                         label="Peron"
                         onChange={(event) => { setLeavingPeron(event.target.value) }}
                     >
-                        {trainPlatforms?.map((trainPlatform : TrainPlatform, index: number) =>(
-                            <MenuItem key = {index} value ={trainPlatform?.platformName}>
-                                    {trainPlatform?.platformName}
+                        {trainPlatforms?.map((trainPlatform: TrainPlatform, index: number) => (
+                            <MenuItem key={index} value={trainPlatform?.platformName}>
+                                {trainPlatform?.platformName}
                             </MenuItem>
                         ))}
                     </Select>

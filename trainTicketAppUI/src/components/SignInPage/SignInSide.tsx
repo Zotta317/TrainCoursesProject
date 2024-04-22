@@ -6,8 +6,7 @@ import { useEffect, useState } from 'react';
 export default function SignIn()  {
 
   const navigate = useNavigate();
-  const [redirect, setRedirect] = useState(false);
-  const [tokenInfo, setTokenInfo] = useState<{ value: string; expiry: Date | null }>({
+  const [, setTokenInfo] = useState<{ value: string; expiry: Date | null }>({
     value: "",
     expiry: null,
   });
@@ -30,21 +29,15 @@ export default function SignIn()  {
         localStorage.setItem("authToken", value);
         localStorage.setItem("authTokenExpiry", new Date(expiry).toISOString());
         setTokenInfo({ value: value, expiry: new Date(expiry) });
-        setRedirect(true);
+        navigate("/mainPage");
       } catch (error) {
-        setRedirect(false);
         alert("Email or password incorrect!");
       }
   };
   
-  useEffect(() => {
-    if (redirect) {
-      navigate("/mainPage");
-    }
-  }, [redirect, navigate]);
 
   return (
-    <SignInContainer onSubmit={onSubmit} redirect={redirect} />
+    <SignInContainer onSubmit={onSubmit}  />
   );
 };
 

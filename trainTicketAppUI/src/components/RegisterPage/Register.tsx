@@ -1,88 +1,25 @@
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { createTheme } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { IconButton, InputAdornment } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { RegisterModel } from '../models/RegisterModel';
+import { RegisterModel } from '../../models/RegisterModel';
+import RegisterContainer from './RegisterContainer';
 
 const defaultTheme = createTheme();
 
 export default function Register() {
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmedPassword, setShowConfirmedPassword] = useState(false);
-
-  // validation schema for Sig in form
-  // Email must be of type @gmail.com 
-  //Password must have at least 1 symbol, 1 number, 1 letter, min size 6
-  //ConfirmOassword must match with Password
-  const schema = z.object({
-    email: z.string()
-      .min(12, { message: 'Email must end in @gmail.com' })
-      .refine((email) => email.endsWith('@gmail.com'), {
-        message: 'Email must end with "@gmail.com"',
-      }),
-    firstName: z.string().min(1, { message: "Please fill this field" }),
-    lastName: z.string().min(1, { message: "Please fill this field" }),
-    password: z.string()
-      .min(6, { message: 'Password must be at least 6 characters. Must have at least 1 number,1 letter and 1 Symbol' })
-      .refine((password) => /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(password), {
-        message: 'Password must contain at least one letter, one number, and one symbol',
-      }),
-    confirmPassword: z.string()
-      .min(6)
-    ,
-  }).refine(
-    (values) => {
-      return values.password === values.confirmPassword;
-    },
-    {
-      message: "Passwords must match!",
-      path: ["confirmPassword"],
-    }
-  );
-
-  type ValidationSchemaType = z.infer<typeof schema>
-
-  //validation resolver (using Zod)
-  const { register, handleSubmit, formState: { errors } } = useForm<ValidationSchemaType>({
-    resolver: zodResolver(schema),
-  });
-
-  // Allow user to see his password
-  const handleClickShowPassword = (fieldId: string) => {
-    if (fieldId === "password") {
-      setShowPassword((prevShowPassword) => !prevShowPassword);
-    } else {
-      setShowConfirmedPassword(
-        (prevShowConfirmedPassword) => !prevShowConfirmedPassword
-      );
-    }
-  };
+  
   const [redirect, setRedirect] = useState(false);
   const navigate = useNavigate();
 
-  const [tokenInfo, setTokenInfo] = useState<{ value: string; expiry: Date | null }>({
+  const [, setTokenInfo] = useState<{ value: string; expiry: Date | null }>({
     value: "",
     expiry: null,
   });
 
 
   // on submit validate data and create a new accout for user
-  const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
+  const onSubmit = async (data : any) => {
     try {
       const validatedProfile: RegisterModel = {
         firstName: data.firstName,
@@ -103,9 +40,8 @@ export default function Register() {
       localStorage.setItem("authToken", value);
       localStorage.setItem("authTokenExpiry", new Date(expiry).toISOString());
       setTokenInfo({ value: value, expiry: new Date(expiry) });
-      setRedirect(true);
+      navigate("/signIn");
     } catch (error) {
-      setRedirect(false);
       alert("Email or password incorrect!");
     }
   }
@@ -119,7 +55,8 @@ export default function Register() {
 
   return (
     <>
-      <ThemeProvider theme={defaultTheme}>
+    <RegisterContainer onSubmit={onSubmit} ></RegisterContainer>
+      {/* <ThemeProvider theme={defaultTheme}>
         <Grid container component="main" sx={{ height: '100vh' }}>
           <CssBaseline />
           <Grid
@@ -263,7 +200,7 @@ export default function Register() {
             </Box>
           </Grid>
         </Grid>
-      </ThemeProvider>
+      </ThemeProvider> */}
     </>
   );
 }

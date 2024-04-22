@@ -4,10 +4,9 @@ import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SignInModel } from '../../models/SignInModel';
 import { redirect, useNavigate } from 'react-router-dom';
 
-const SignInForm = ({ onSubmit ,redirect} : any) => {
+export default function SignInForm ({ onSubmit} : any ) {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const schema = z.object({
@@ -29,11 +28,6 @@ const SignInForm = ({ onSubmit ,redirect} : any) => {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   
-  useEffect(() => {
-    if (redirect) {
-      navigate("/mainPage");
-    }
-  }, [redirect, redirect]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -86,4 +80,3 @@ const SignInForm = ({ onSubmit ,redirect} : any) => {
   );
 };
 
-export default SignInForm;

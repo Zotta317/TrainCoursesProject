@@ -25,8 +25,12 @@ namespace trainTicketApp.Repository
 
         public string GetTrainName(Guid trainId)
         {
-            var train = trainDbContext.Train.FirstOrDefault(train => train.TrainID == trainId);
-            return train?.TrainName;
+            return trainDbContext.Train.FirstOrDefault(train => train.TrainID == trainId).TrainName;
+        }
+
+        public int GetTrainSeatsNumber(Guid trainId)
+        {
+            return trainDbContext.Train.FirstOrDefault(train => train.TrainID == trainId).NumberOfSeats;
         }
     }
 }

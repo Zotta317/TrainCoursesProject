@@ -3,8 +3,8 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import React, { useEffect, useState } from "react";
-import { Course } from "../models/Course";
-import NavigationBar from "./NavigationBar";
+import { Course } from "../models/CourseView";
+import NavigationBar from "./NavigationBar/NavigationBar";
 import dayjs, { Dayjs } from "dayjs";
 
 const style = {
@@ -28,8 +28,9 @@ export default function MainPage() {
   
   const token = localStorage.getItem("authToken");
   const [dateValue, setdateValue] = React.useState<Dayjs | null>(dayjs());
-  const [courseViews, setCourseViews] = useState<Course[]>([])
-  const [selectedLeavingTime,setSelectedLeavingTime] = React.useState<String | undefined>('2024-03-28T17:13:36')
+  const [courseViews, setCourseViews] = useState<Course[]>([]);
+  const [selectedLeavingTime,setSelectedLeavingTime] = React.useState<String | undefined>('2024-03-28T17:13:36');
+
   //filter courses based on user's preferences
   const selectedCity: Course[] = courseViews
     ? courseViews.filter((course) => course?.leavingCity == selectedCurrentCity && (!selectedDestinationCity || course?.arrivingCity == selectedDestinationCity))
@@ -87,7 +88,7 @@ export default function MainPage() {
     setOpenCourseIdForPurchase(null)
   };
 
-  //get all courses from database
+  //get all courses from database based on database
   useEffect(() => {
     const fetchData = async () => {
       try {

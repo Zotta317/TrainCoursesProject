@@ -1,10 +1,9 @@
-export interface Course{
+export interface CourseView{
     courseID : string,
     leavingCity : string,
     arrivingCity : string,
     leavingTime: string,
     arrivingTime : string,
-    availableTrainSeats : number,
-    trainName : String,
-    trainType : String
+    numberOfSeatsAvailable : number,
+    trainName : String
 }

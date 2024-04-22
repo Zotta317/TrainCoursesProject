@@ -11,5 +11,7 @@
         public Guid SeatId { get; set; }
         public Guid CourseId { get; set; }
 
+        public Guid PlatformId { get; set; }
+
     }
 }

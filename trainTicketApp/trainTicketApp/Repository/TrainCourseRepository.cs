@@ -13,7 +13,7 @@ namespace trainTicketApp.Repository
             this.trainDbContext = trainDbContext;
         }
 
-        public async Task CreateTrainCoursesSeats(Course course)
+        public async Task AddTrainCoursesSeats(Course course)
         {
             var seats = trainDbContext.Seat.Where(s => s.TrainId == course.TrainId).ToList();
             var trainCourses = seats.Select(seat => new TrainCourse
@@ -24,7 +24,6 @@ namespace trainTicketApp.Repository
             }).ToList();
 
             await trainDbContext.TrainCourses.AddRangeAsync(trainCourses);
-            await trainDbContext.SaveChangesAsync();
         }
 
         public async Task<Guid> UpdateTrainCourseSeat(Guid courseId)

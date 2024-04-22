@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
 using trainTicketApp.DTOs;
 using trainTicketApp.Model;
 using static trainTicketApp.Data.TraintDataApi;
@@ -9,7 +9,9 @@ namespace trainTicketApp.Repository
     {
         public List<TicketGetDTO> GetTickets(Guid userID);
 
-        //public Task<Ticket> AddTicket(Guid courseID, Guid userId);
+        public Task<Ticket> AddTicket(Guid courseID, Guid userId);
+
+        public List<Ticket> GetAllUserTickets(Guid userId);
     }
     public class TicketRepository : ITicketRepository
     {
@@ -18,23 +20,29 @@ namespace trainTicketApp.Repository
         private readonly SeatRepository seatRepository;
         private readonly TrainRepository trainRepository;
         private readonly TrainCourseRepository trainCourseRepository;
+        private readonly CarrigeRepository carrigeRepository;
+        private readonly ProfileRepository profileRepository;
+        private readonly PlatformRepository platformRepository;
 
-        public TicketRepository(TrainDbContext _trainDbContext, CourseRepository _courseRepository, SeatRepository _seatRepository, TrainRepository _trainRepository, TrainCourseRepository _trainCourseRepository)
+        public TicketRepository(TrainDbContext _trainDbContext, CourseRepository _courseRepository, SeatRepository _seatRepository, 
+            TrainRepository _trainRepository, TrainCourseRepository _trainCourseRepository,CarrigeRepository _carrigeRepository,
+            ProfileRepository _profileRepository,PlatformRepository _platformRepository)
         {
             trainDbContext = _trainDbContext;
             courseRepository = _courseRepository;
             seatRepository = _seatRepository;
             trainRepository = _trainRepository;
             trainCourseRepository = _trainCourseRepository;
+            carrigeRepository = _carrigeRepository;
+            profileRepository = _profileRepository;
+            platformRepository = _platformRepository;
         }
 
         public async Task<Ticket> AddTicket(Guid courseID, Guid userId)
         {
-            var course = courseRepository.GetCourse(courseID);
-            var train = trainRepository.GetTrainById(course.TrainId);
-            var carrige = trainDbContext.Carrige.FirstOrDefault(c => c.TrainId == course.TrainId).CarrigeID;
+            var course = courseRepository.GetCourseById(courseID);
             var seatId = await trainCourseRepository.UpdateTrainCourseSeat(courseID);
-
+            var platform = platformRepository.GetPlatformById(courseID);
             var ticket = new Ticket
             {
                 TicketID = Guid.NewGuid(),
@@ -42,23 +50,27 @@ namespace trainTicketApp.Repository
                 TrainId = course.TrainId,
                 SeatId = seatId,
                 CourseId = courseID,
-
+                PlatformId = platform.PlatformID
             };
 
             await trainDbContext.Ticket.AddAsync(ticket);
 
-            course.NumberOfSeatsAvailable = trainCourseRepository.GetAvailableSeats(courseID);
             await trainDbContext.SaveChangesAsync();
 
             return ticket;
 
         }
 
+        public List<Ticket> GetAllUserTickets(Guid userID)
+        {
+            return trainDbContext.Ticket.Where(t => t.ProfileId == userID).ToList();
+        }
+
         public List<TicketGetDTO> GetTickets(Guid userID)
         {
-            
-            var user = trainDbContext.User.FirstOrDefault(x => x.ID == userID);
+            var user = profileRepository.GetProfileById(userID);
 
+            //Sql Version
             var ticketDtos = (
                 from ticket in trainDbContext.Ticket
                 join course in trainDbContext.Course on ticket.CourseId equals course.CourseID
@@ -79,23 +91,28 @@ namespace trainTicketApp.Repository
                 }
             ).ToList();
 
+            //Dotnet version
+
+            //List<TicketGetDTO> ticketDtos = new List<TicketGetDTO>();
+            //var tickets = GetAllUserTickets(userID);
             //foreach (var ticket in tickets)
             //{
-            //    var course = courseRepository.GetCourse(ticket.CourseId);
+            //    var course = courseRepository.GetCourseById(ticket.CourseId);
             //    var seat = seatRepository.GetBySeatId(ticket.SeatId);
             //    var train = trainRepository.GetTrainName(ticket.TrainId);
+            //    var carrige = carrigeRepository.GetCarrigeByTrain(ticket.TrainId);
 
             //    var ticketDTO = new TicketGetDTO
             //    {
             //        TicketID = ticket.TicketID,
             //        TrainName = train,
-            //        CarrigeName = trainDbContext.Carrige.FirstOrDefault(c => c.CarrigeID == seat.CarrigeId).Name,
+            //        CarrigeName = carrige.Name,
             //        SeatName = seat.SeatName,
             //        ArrivingCity = course.ArrivingCity.ToString(),
             //        LeavingCity = course.LeavingCity.ToString(),
             //        ArrivingTime = course.ArivingTime,
             //        LeavingTime = course.ArivingTime,
-            //        ClientName = user.FirstName + " " + user.LastName,
+            //        ClientName = $"{user.FirstName} {user.LastName}",
             //    };
 
             //    ticketDtos.Add(ticketDTO);

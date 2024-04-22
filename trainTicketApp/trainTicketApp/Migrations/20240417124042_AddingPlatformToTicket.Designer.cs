@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using trainTicketApp.Data;
 
@@ -11,9 +12,10 @@ using trainTicketApp.Data;
 namespace trainTicketApp.Migrations
 {
     [DbContext(typeof(TraintDataApi.TrainDbContext))]
-    partial class TrainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240417124042_AddingPlatformToTicket")]
+    partial class AddingPlatformToTicket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -334,14 +336,20 @@ namespace trainTicketApp.Migrations
                     b.Property<DateTime>("ArivingTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ArrivingCity")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ArrivingCity")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("LeavingCity")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("LeavingCity")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LeavingTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("NumberOfSeatsAvailable")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("PlatformId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("TrainId")
                         .HasColumnType("uniqueidentifier");
