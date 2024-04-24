@@ -1,23 +1,32 @@
-import { Box, Button, Divider, Modal, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { Box, Button, Modal, Typography } from "@mui/material";
 
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 500,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
+   
+    const style = {
+        position: 'absolute' as 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 500,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+    };
 
-export default function BuyTicket(courseId: any) {
-
-    const [openCourseIdForPurchase, setOpenCourseIdForPurchase] = useState<
-        string | null
-    >(null);
+ interface BuyTicketProps {
+        courseId: string | null;
+        openCourseIdForPurchase: string | null;
+        setOpenCourseIdForPurchase: (courseId: string | null) => void;
+        boughtTicket : boolean;
+        setBoughtTicket : (boughtTciket : boolean) => void;
+    }
+    
+    export default function BuyTicket({
+        courseId,
+        openCourseIdForPurchase,
+        setOpenCourseIdForPurchase,
+        setBoughtTicket 
+    }: BuyTicketProps) {
 
     const fetchAddTicket = async () => {
 
@@ -36,12 +45,15 @@ export default function BuyTicket(courseId: any) {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
-
         } catch (error) {
             console.error('Error fetching data:', error);
         }
         setOpenCourseIdForPurchase(null)
+        setBoughtTicket(true);
+    };
+
+    const handleCloseModal = () => {
+        setOpenCourseIdForPurchase(null);
     };
     return (
         <>
@@ -66,7 +78,7 @@ export default function BuyTicket(courseId: any) {
                         Please confirm your purchase.
                     </Typography>
                     <Box sx={{ marginTop: 4 }} gap={5} >
-                        <Button variant="contained" onClick={() => setOpenCourseIdForPurchase(courseId)}>Cancel</Button>
+                        <Button variant="contained" onClick={handleCloseModal}>Cancel</Button>
                         <Button key={courseId} variant="contained" onClick={fetchAddTicket}>Confirm</Button>
                     </Box>
                 </Box>

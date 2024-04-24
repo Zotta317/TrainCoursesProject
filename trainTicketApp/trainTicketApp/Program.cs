@@ -27,7 +27,7 @@ builder.Services.AddScoped<PlatformRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 
-
+builder.Services.AddScoped<ITrainPlatformService, TrainPlatformService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ITicketService, TicketService>();
 

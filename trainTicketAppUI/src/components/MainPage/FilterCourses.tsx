@@ -1,4 +1,4 @@
-import { Box, FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -7,11 +7,10 @@ import React, { useEffect, useState } from "react";
 import { CourseView } from "../../models/CourseView";
 import ShowCourses from "./ShowCourses";
 
-
 export default function FilterCourses() {
 
   const cities = ["Cluj-Napoca", "Brasov", "Bucuresti", "Iasi", "Oradea", "Galati", "Suceava"]
-  const [selectedCurrentCity, setSelectedCurrentCity] = useState<string>("");
+  const [selectedCurrentCity, setSelectedCurrentCity] = useState<string>("Cluj-Napoca");
   const [selectedDestinationCity, setSelectedDestinationCity] = useState<string>("");
   const [dateValue, setdateValue] = React.useState<Dayjs | null>(dayjs());
   const [courseViews, setCourseViews] = useState<CourseView[]>([]);
@@ -22,11 +21,13 @@ export default function FilterCourses() {
   const [selectedLeavingTime, setSelectedLeavingTime] = React.useState<String | undefined>('2024-03-28T17:13:36');
 
   const filteredCities = cities.filter(city => city !== selectedCurrentCity);
+  console.log(courseViews)
 
+  const [boughtTicket,setBougthTicket] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = `https://localhost:7156/api/Course/GetCourseByDate/${selectedLeavingTime}`;
+        let url = `https://localhost:7156/api/Course/GetCourseByDate/${selectedLeavingTime}?arrivingCity=${selectedDestinationCity}&leavingCity=${selectedCurrentCity}`;
         const response = await fetch(url, {
           method: "Get",
           headers: {
@@ -40,33 +41,19 @@ export default function FilterCourses() {
 
         const data = await response.json();
         setCourseViews(data);
-        // console.log(data)
-
+        setBougthTicket(false)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
     fetchData();
-  })
+  }, [selectedCurrentCity, selectedDestinationCity, selectedLeavingTime,boughtTicket])
 
   useEffect(() => {
     const formattedDate = dateValue?.format("YYYY-MM-DDTHH:mm:ss")
     setSelectedLeavingTime(formattedDate);
   }
     , [dateValue])
-
-  //filter courses based on user's preferences
-  const selectedCity: CourseView[] = courseViews
-    ? courseViews.filter((course) => course?.leavingCity == selectedCurrentCity && (!selectedDestinationCity || course?.arrivingCity == selectedDestinationCity))
-      .map((courseViews: CourseView) => ({
-        courseID: courseViews.courseID,
-        arrivingCity: courseViews.arrivingCity,
-        leavingCity: courseViews.leavingCity,
-        arrivingTime: courseViews.arrivingTime,
-        leavingTime: courseViews.leavingTime,
-        numberOfSeatsAvailable: courseViews.numberOfSeatsAvailable,
-        trainName: courseViews.trainName,
-      })) : [];
 
   return (
     <>
@@ -123,10 +110,10 @@ export default function FilterCourses() {
               ))}
             </Select>
           </FormControl>
-          
+
         </Grid>
       </Grid>
-      <ShowCourses selectedCity={selectedCity}></ShowCourses>
+      <ShowCourses courseViews={courseViews} boughtTicket = {boughtTicket} setBoughtTicket ={setBougthTicket} ></ShowCourses>
     </>
   )
 }

@@ -27,7 +27,7 @@ namespace trainTicketApp.Repository
             return trainDbContext.TrainPlatforms.FirstOrDefault(x => x.PlatformID == id).City;
         }
 
-        public List<TrainPlatforms> GetPlatformsByName(string name)
+        public List<TrainPlatforms> GetPlatformsByCity(string name)
         {
             return trainDbContext.TrainPlatforms.Where(p => p.City == name).ToList();
         }

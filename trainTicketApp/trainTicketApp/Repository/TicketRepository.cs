@@ -42,7 +42,7 @@ namespace trainTicketApp.Repository
         {
             var course = courseRepository.GetCourseById(courseID);
             var seatId = await trainCourseRepository.UpdateTrainCourseSeat(courseID);
-            var platform = platformRepository.GetPlatformById(courseID);
+            var platform = platformRepository.GetPlatformById(course.LeavingCity);
             var ticket = new Ticket
             {
                 TicketID = Guid.NewGuid(),
@@ -71,53 +71,55 @@ namespace trainTicketApp.Repository
             var user = profileRepository.GetProfileById(userID);
 
             //Sql Version
-            var ticketDtos = (
-                from ticket in trainDbContext.Ticket
-                join course in trainDbContext.Course on ticket.CourseId equals course.CourseID
-                join train in trainDbContext.Train on ticket.TrainId equals train.TrainID
-                join seat in trainDbContext.Seat on ticket.SeatId equals seat.SeatID
-                join carrige in trainDbContext.Carrige on seat.CarrigeId equals carrige.CarrigeID
-                select new TicketGetDTO
-                {
-                    TicketID = ticket.TicketID,
-                    TrainName = train.TrainName,
-                    CarrigeName = carrige.Name,
-                    SeatName = seat.SeatName,
-                    ArrivingCity = course.ArrivingCity.ToString(),
-                    LeavingCity = course.LeavingCity.ToString(),
-                    ArrivingTime = course.ArivingTime,
-                    LeavingTime = course.LeavingTime,
-                    ClientName = $"{user.FirstName} {user.LastName}"
-                }
-            ).ToList();
-
-            //Dotnet version
-
-            //List<TicketGetDTO> ticketDtos = new List<TicketGetDTO>();
-            //var tickets = GetAllUserTickets(userID);
-            //foreach (var ticket in tickets)
-            //{
-            //    var course = courseRepository.GetCourseById(ticket.CourseId);
-            //    var seat = seatRepository.GetBySeatId(ticket.SeatId);
-            //    var train = trainRepository.GetTrainName(ticket.TrainId);
-            //    var carrige = carrigeRepository.GetCarrigeByTrain(ticket.TrainId);
-
-            //    var ticketDTO = new TicketGetDTO
+            //var ticketDtos = (
+            //    from ticket in trainDbContext.Ticket
+            //    join course in trainDbContext.Course on ticket.CourseId equals course.CourseID
+            //    join train in trainDbContext.Train on ticket.TrainId equals train.TrainID
+            //    join seat in trainDbContext.Seat on ticket.SeatId equals seat.SeatID
+            //    join carrige in trainDbContext.Carrige on seat.CarrigeId equals carrige.CarrigeID
+            //    select new TicketGetDTO
             //    {
             //        TicketID = ticket.TicketID,
-            //        TrainName = train,
+            //        TrainName = train.TrainName,
             //        CarrigeName = carrige.Name,
             //        SeatName = seat.SeatName,
             //        ArrivingCity = course.ArrivingCity.ToString(),
             //        LeavingCity = course.LeavingCity.ToString(),
             //        ArrivingTime = course.ArivingTime,
-            //        LeavingTime = course.ArivingTime,
-            //        ClientName = $"{user.FirstName} {user.LastName}",
-            //    };
+            //        LeavingTime = course.LeavingTime,
+            //        ClientName = $"{user.FirstName} {user.LastName}"
+            //    }
+            //).ToList();
 
-            //    ticketDtos.Add(ticketDTO);
+            //Dotnet version
 
-            //}
+            List<TicketGetDTO> ticketDtos = new List<TicketGetDTO>();
+            var tickets = GetAllUserTickets(userID);
+            foreach (var ticket in tickets)
+            {
+                var course = courseRepository.GetCourseById(ticket.CourseId);
+                var seat = seatRepository.GetBySeatId(ticket.SeatId);
+                var train = trainRepository.GetTrainName(ticket.TrainId);
+                var carrige = carrigeRepository.GetCarrigeByTrain(ticket.TrainId);
+                var arrivingCity = platformRepository.GetPlatformById(course.ArrivingCity).City;
+                var leavingCity = platformRepository.GetPlatformById(course.LeavingCity).City;
+
+                var ticketDTO = new TicketGetDTO
+                {
+                    TicketID = ticket.TicketID,
+                    TrainName = train,
+                    CarrigeName = carrige.Name,
+                    SeatName = seat.SeatName,
+                    ArrivingCity = arrivingCity,
+                    LeavingCity =leavingCity,
+                    ArrivingTime = course.ArivingTime,
+                    LeavingTime = course.ArivingTime,
+                    ClientName = $"{user.FirstName} {user.LastName}",
+                };
+
+                ticketDtos.Add(ticketDTO);
+
+            }
 
             return ticketDtos;
         }

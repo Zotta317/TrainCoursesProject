@@ -2,7 +2,8 @@ import { AppBar, Box, Button, CssBaseline, Toolbar, Typography } from "@mui/mate
 import { useEffect, useState } from "react";
 import { Profile } from "../../models/Profile";
 import { useNavigate } from "react-router-dom";
-import Logout from "../LogOut";
+import Logout from "../LogOut/LogOut";
+// import Logout from "../LogOut/LogOut";
 
 export default function NavigationBar() {
   

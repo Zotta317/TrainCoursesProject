@@ -1,8 +1,7 @@
-import { Box, Divider, Stack, TextField, Typography } from "@mui/material";
-import NavigationBar from "./NavigationBar/NavigationBar";
-import { TicketView } from "../models/TicketView";
-import { useEffect, useState } from "react";
-import React from "react";
+import { Box, Divider, Stack, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { TicketView } from "../../models/TicketView";
+import NavigationBar from "../NavigationBar/NavigationBar";
 
 export default function ProfilePage() {
 
@@ -13,7 +12,7 @@ export default function ProfilePage() {
     useEffect(() => {
         const fetchDataTicket = async () => {
             try {
-                let url = "https://localhost:7156/api/Ticket/GetUserTickets/AllUserTickets"
+                let url = "https://localhost:7156/api/Ticket/GetTickets/GetAllTickets"
 
                 const response = await fetch(url, {
                     method: "Get",
@@ -48,7 +47,6 @@ export default function ProfilePage() {
                     flexDirection: "column",
                 }}
             >
-
                 {ticketViews?.length === 0 ? (
                     <Typography variant="h6" color="textSecondary" sx={{ mt: 20 }}>
                         You have no tickets.
@@ -68,17 +66,15 @@ export default function ProfilePage() {
                                     }}>
                                     
                                     <Stack direction="column">
-
                                         <Typography
                                             variant="h6"
                                             marginRight={20}
                                             alignItems="center"
                                             color={"white"}
                                         >
-                                            
                                             Leaving City:  {ticketView?.leavingCity}
-                                           
                                         </Typography>
+
                                         <Typography
                                             color={"white"}
                                             variant="h6"
@@ -97,7 +93,7 @@ export default function ProfilePage() {
                                             marginRight: 30,
                                             
                                         }}>
-                                            {"\n"+ticketView?.firstName + " " + ticketView?.lastName }
+                                            {"\n"+ticketView?.clientName }
                                         </Typography>
                                     </Stack>
                                     <Stack direction="column">
@@ -109,7 +105,6 @@ export default function ProfilePage() {
                                         >
                                             Arriving City : {ticketView?.arrivingCity}
                                         </Typography>
-
 
                                         <Typography
                                             variant="h6"
@@ -127,7 +122,6 @@ export default function ProfilePage() {
                                             <Typography
                                                 variant="h6"
                                                 sx={{ fontSize: 15, marginTop: 2, color: "white" }}
-
                                             >
                                                 TrainType:
                                                 HighSpeed

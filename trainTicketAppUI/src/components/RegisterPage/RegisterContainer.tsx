@@ -1,14 +1,12 @@
-import { ThemeProvider } from "@emotion/react";
-import { Avatar, Box, CssBaseline, Grid, Paper, Typography, createTheme } from "@mui/material";
-import  BackgroundImage  from '../Backgorund/BackgroundImage';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Avatar, Box, Grid, Paper, Typography } from "@mui/material";
+import BackgroundImage from '../Backgorund/BackgroundImage';
 import RegisterForm from "./RegisterForm";
-const defaultTheme = createTheme();
+
 const RegisterContainer = ({ onSubmit }: { onSubmit: (data: any) => Promise<void> }) =>{
     
     return(
         <>
-      <ThemeProvider theme={defaultTheme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
       <BackgroundImage />
           <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -32,7 +30,7 @@ const RegisterContainer = ({ onSubmit }: { onSubmit: (data: any) => Promise<void
             </Box>
           </Grid>
           </Grid>
-      </ThemeProvider>
+  
     </>
     )
 } 

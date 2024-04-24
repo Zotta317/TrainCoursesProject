@@ -34,9 +34,9 @@ namespace trainTicketApp.Controllers
         }
 
         [HttpGet("{date}")]
-        public ActionResult<Course> GetCourseByDate(DateTime date)
+        public ActionResult<Course> GetCourseByDate(DateTime date,string? arrivingCity,string? leavingCity)
         {
-            var course = _courseService.GetCoursesByDate(date);
+            var course = _courseService.GetCoursesByDate(date,arrivingCity,leavingCity);
             return Ok(course);
         }
 

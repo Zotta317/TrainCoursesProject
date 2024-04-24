@@ -7,6 +7,5 @@ export interface TicketView{
     arrivingTime : string,
     leavingCity : string,
     arrivingCity : string,
-    firstName : string,
-    lastName : string
+    clientName : string,
 }

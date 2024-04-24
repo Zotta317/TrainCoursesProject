@@ -2,9 +2,42 @@ import { Avatar, Box, Grid, Paper, Typography } from '@mui/material';
 import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
 import SignInForm from './SignInForm';
 import BackgroundImage from '../Backgorund/BackgroundImage';
-// import BackgroundImage from './BackgroundImage';
-// import  BackgroundImage  from '../Backgorund/BackgroundImage';
-const SignInContainer = ({ onSubmit, navigate } : any) => {
+import { useNavigate } from 'react-router-dom';
+import { SignInModel } from '../../models/SignInModel';
+import { useState } from 'react';
+
+const SignInContainer = () => {
+
+  const navigate = useNavigate();
+  const [, setTokenInfo] = useState<{ value: string; expiry: Date | null }>({
+    value: "",
+    expiry: null,
+  });
+  const onSubmit = async (data: any) => {
+    try {
+        const validatedProfile: SignInModel = {
+          email: data.email,
+          password: data.password
+        }
+        const response = await fetch(`https://localhost:7156/api/Security/Login`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "text/json",
+          },
+          body: JSON.stringify(validatedProfile),
+        });
+        const responseData = await response.json();
+        const { value, expiry } = responseData;
+        localStorage.setItem("authToken", value);
+        localStorage.setItem("authTokenExpiry", new Date(expiry).toISOString());
+        setTokenInfo({ value: value, expiry: new Date(expiry) });
+        navigate("/mainPage");
+      } catch (error) {
+        alert("Email or password incorrect!");
+      }
+  };
+
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>
       <BackgroundImage />
@@ -24,7 +57,7 @@ const SignInContainer = ({ onSubmit, navigate } : any) => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <SignInForm onSubmit={onSubmit} navigate={navigate} />
+          <SignInForm onSubmit={onSubmit} />
         </Box>
       </Grid>
     </Grid>

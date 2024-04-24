@@ -2,9 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-import { Visibility, VisibilityOff } from "@mui/icons-material"
-import { Avatar, Box, Button, CssBaseline, Grid, IconButton, InputAdornment, Link, TextField, Typography, createTheme } from "@mui/material"
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Box, Button, Grid, IconButton, InputAdornment, Link, TextField } from "@mui/material";
 
 export default function RegisterForm({ onSubmit} : any){
     const [showPassword, setShowPassword] = useState(false);

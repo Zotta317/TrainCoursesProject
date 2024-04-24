@@ -1,28 +1,26 @@
-import { Box, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
-import NavigationBar from "./NavigationBar/NavigationBar";
+import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { TrainPlatform } from "../models/TrainPlatform";
+import { TrainPlatform } from "../../models/TrainPlatform";
+import NavigationBar from "../NavigationBar/NavigationBar";
 
 export default function CoursesPage() {
     const cities = ["Cluj-Napoca", "Brasov", "Bucuresti", "Iasi", "Oradea", "Galati", "Suceava"]
     const [selectedCurrentCity, setSelectedCurrentCity] = useState<string>("");
     const [selectedDestinationCity, setSelectedDestinationCity] = useState<string>("");
 
-    const [LeavingCityPeron, setLeavingPeron] = useState<String>();
+    const [leavingPeron, setLeavingPeron] = useState<String>();
     const [trainPlatforms, setTrainPlatforms] = useState<TrainPlatform[]>();
     const filteredCities = cities.filter(city => city !== selectedCurrentCity);
     const token = localStorage.getItem("authToken");
-
-
 
     useEffect(() => {
         const fetchGetPlatform = async () => {
             if (selectedCurrentCity !== null) {
                 try {
-                    let url = `https://localhost:7156/api/Platform/GetPlatform?leavingCity=${selectedCurrentCity}`
+                    let url = `https://localhost:7156/api/Platform/GetPlatformsByCity/${selectedCurrentCity}`
                     const response = await fetch(url, {
                         method: "Get",
                         headers: {
@@ -84,13 +82,13 @@ export default function CoursesPage() {
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={LeavingCityPeron}
+                        value={leavingPeron}
                         label="Peron"
                         onChange={(event) => { setLeavingPeron(event.target.value) }}
                     >
                         {trainPlatforms?.map((trainPlatform: TrainPlatform, index: number) => (
-                            <MenuItem key={index} value={trainPlatform?.platformName}>
-                                {trainPlatform?.platformName}
+                            <MenuItem key={index} value={trainPlatform?.name}>
+                                {trainPlatform?.name}
                             </MenuItem>
                         ))}
                     </Select>
@@ -113,7 +111,23 @@ export default function CoursesPage() {
                     </Select>
                 </FormControl>
 
-                =                <FormControl sx={{ width: '50ch', alignSelf: "center", marginTop: 3 }}>
+                <FormControl sx={{ width: '50ch', alignSelf: "center", marginTop: 3 }}>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={leavingPeron}
+                        label="Peron"
+                        onChange={(event) => { setLeavingPeron(event.target.value) }}
+                    >
+                        {trainPlatforms?.map((trainPlatform: TrainPlatform, index: number) => (
+                            <MenuItem key={index} value={trainPlatform?.name}>
+                                {trainPlatform?.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <FormControl sx={{ width: '50ch', alignSelf: "center", marginTop: 3 }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                             label="Date Picker"
@@ -122,7 +136,22 @@ export default function CoursesPage() {
                         />
                     </LocalizationProvider>
                 </FormControl>
-
+                
+                <FormControl sx={{ width: '50ch', alignSelf: "center", marginTop: 3 }}>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={leavingPeron}
+                        label="Peron"
+                        onChange={(event) => { setLeavingPeron(event.target.value) }}
+                    >
+                        {trainPlatforms?.map((trainPlatform: TrainPlatform, index: number) => (
+                            <MenuItem key={index} value={trainPlatform?.name}>
+                                {trainPlatform?.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
             </Box>
         </>
     )

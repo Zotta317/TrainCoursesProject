@@ -10,19 +10,17 @@ namespace trainTicketApp.Service
         List<CourseGetDTO> GetAllCourses();
         Course GetCourse(Guid courseId);
 
-        List<CourseGetDTO> GetCoursesByDate(DateTime date);
+        List<CourseGetDTO> GetCoursesByDate(DateTime date,string? arrivingCity,string? leavingCity);
 
         Task<Course> AddCourse(CourseAddDTO course);
     }
     public class CourseService : ICourseService
     {
         private readonly CourseRepository _courseRepository;
-        private readonly TrainCourseRepository _trainCourseRepository;
 
-        public CourseService(CourseRepository courseRepository, TrainCourseRepository trainCourseRepository)
+        public CourseService(CourseRepository courseRepository)
         {
             _courseRepository = courseRepository;
-            _trainCourseRepository = trainCourseRepository;
         }
 
         public List<CourseGetDTO> GetAllCourses()
@@ -30,9 +28,16 @@ namespace trainTicketApp.Service
             return _courseRepository.GetAllCourses();
         }
 
-        public List<CourseGetDTO> GetCoursesByDate(DateTime selectedDate)
+        public List<CourseGetDTO> GetCoursesByDate(DateTime selectedDate,string? arrivingCity, string? leavingCity)
         {
-            return _courseRepository.GetCoursesByDate(selectedDate);
+            var courses = _courseRepository.GetCoursesByDate(selectedDate);
+
+            if (leavingCity != null)
+                courses = courses.Where(course => course.LeavingCity == leavingCity).ToList();
+            if (arrivingCity != null)
+                courses = courses.Where(course => course.ArrivingCity == arrivingCity).ToList();
+
+            return courses;
         }
 
         public  Course GetCourse(Guid courseId)

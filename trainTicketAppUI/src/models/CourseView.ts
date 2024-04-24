@@ -3,7 +3,7 @@ export interface CourseView{
     leavingCity : string,
     arrivingCity : string,
     leavingTime: string,
-    arrivingTime : string,
+    arivingTime : string,
     numberOfSeatsAvailable : number,
     trainName : String
 }
