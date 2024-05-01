@@ -4,7 +4,7 @@ export default function Register() {
 
   return (
     <>
-    <RegisterContainer></RegisterContainer>
+    <RegisterContainer/>
     </>
   );
 }

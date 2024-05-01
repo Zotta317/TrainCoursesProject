@@ -12,8 +12,8 @@ using trainTicketApp.Data;
 namespace trainTicketApp.Migrations
 {
     [DbContext(typeof(TraintDataApi.TrainDbContext))]
-    [Migration("20240417160953_UpdatePlatformCourseTables")]
-    partial class UpdatePlatformCourseTables
+    [Migration("20240430144802_CourseAndTrainCourseChanges")]
+    partial class CourseAndTrainCourseChanges
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -336,21 +336,36 @@ namespace trainTicketApp.Migrations
                     b.Property<DateTime>("ArivingTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("ArrivingCity")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ArrivingCity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("LeavingCity")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("LeavingCity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LeavingTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("TrainId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("CourseID");
 
                     b.ToTable("Course");
+                });
+
+            modelBuilder.Entity("trainTicketApp.Model.CourseSeats", b =>
+                {
+                    b.Property<Guid>("SeatId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Booked")
+                        .HasColumnType("bit");
+
+                    b.HasKey("SeatId", "CourseId");
+
+                    b.ToTable("CourseSeats");
                 });
 
             modelBuilder.Entity("trainTicketApp.Model.Profile", b =>
@@ -709,16 +724,28 @@ namespace trainTicketApp.Migrations
 
             modelBuilder.Entity("trainTicketApp.Model.TrainCourse", b =>
                 {
-                    b.Property<Guid>("SeatId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("Booked")
-                        .HasColumnType("bit");
+                    b.Property<Guid>("TrainId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("SeatId", "CourseId");
+                    b.Property<Guid>("ArrivingCity")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ArrivingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("AvaillableSeats")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("LeavingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Leavingcity")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("CourseId", "TrainId");
 
                     b.ToTable("TrainCourses");
                 });

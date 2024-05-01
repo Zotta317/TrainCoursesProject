@@ -12,16 +12,16 @@ namespace trainTicketApp.Controllers
     public class PlatformController : Controller
     {
 
-        private readonly ITrainPlatformService trainPlatformService;
+        private readonly ITrainPlatformService _trainPlatformService;
 
-        public PlatformController(ITrainPlatformService _trainPlatformService)
+        public PlatformController(ITrainPlatformService trainPlatformService)
         {
-            trainPlatformService = _trainPlatformService;
+            _trainPlatformService = trainPlatformService;
         }
         [HttpGet("{city}")]
-        public List<TrainPlatforms> GetPlatformsByCity(string city) 
+        public List<String> GetPlatformsByCity(string city) 
         {
-            return trainPlatformService.GetPlatformsByCity(city);
+            return _trainPlatformService.GetPlatformsByCity(city);
         }
 
     }

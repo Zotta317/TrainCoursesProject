@@ -11,9 +11,9 @@ namespace trainTicketApp.Service
     }
     public class TicketService : ITicketService
     {
-        public TicketRepository _ticketRepository { get; set; }
+        public ITicketRepository _ticketRepository { get; set; }
 
-        public TicketService(TicketRepository ticketRepository)
+        public TicketService(ITicketRepository ticketRepository)
         {
             _ticketRepository = ticketRepository;
         }

@@ -10,48 +10,51 @@ import ShowCourses from "./ShowCourses";
 export default function FilterCourses() {
 
   const cities = ["Cluj-Napoca", "Brasov", "Bucuresti", "Iasi", "Oradea", "Galati", "Suceava"]
-  const [selectedCurrentCity, setSelectedCurrentCity] = useState<string>("Cluj-Napoca");
-  const [selectedDestinationCity, setSelectedDestinationCity] = useState<string>("");
+  const [leavingCity, setleavingCity] = useState<string>("Cluj-Napoca");
+  const [arrivingCity, setarrivingCity] = useState<string>("");
   const [dateValue, setdateValue] = React.useState<Dayjs | null>(dayjs());
   const [courseViews, setCourseViews] = useState<CourseView[]>([]);
   const token = localStorage.getItem("authToken");
   const handleDateChange = (newValue: Dayjs | null) => {
     setdateValue(newValue);
   }
-  const [selectedLeavingTime, setSelectedLeavingTime] = React.useState<String | undefined>('2024-03-28T17:13:36');
+  const [date, setDate] = React.useState<String | undefined>('2024-03-28T17:13:36');
 
-  const filteredCities = cities.filter(city => city !== selectedCurrentCity);
+  const filteredCities = cities.filter(city => city !== leavingCity);
   console.log(courseViews)
 
   const [boughtTicket,setBougthTicket] = useState(false);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let url = `https://localhost:7156/api/Course/GetCourseByDate/${selectedLeavingTime}?arrivingCity=${selectedDestinationCity}&leavingCity=${selectedCurrentCity}`;
-        const response = await fetch(url, {
-          method: "Get",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+  const fetchData = async () => {
+    try {
+      let url = `https://localhost:7156/api/TrainCourse/GetTrainCourseByDate/${date}?arrivingCity=${arrivingCity}&leavingCity=${leavingCity}`;
+      const response = await fetch(url, {
+        method: "Get",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        const data = await response.json();
-        setCourseViews(data);
-        setBougthTicket(false)
-      } catch (error) {
-        console.error('Error fetching data:', error);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-    };
+
+      const data = await response.json();
+      setCourseViews(data);
+      setBougthTicket(false)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+
     fetchData();
-  }, [selectedCurrentCity, selectedDestinationCity, selectedLeavingTime,boughtTicket])
+  }, [leavingCity, arrivingCity, date,boughtTicket])
 
   useEffect(() => {
     const formattedDate = dateValue?.format("YYYY-MM-DDTHH:mm:ss")
-    setSelectedLeavingTime(formattedDate);
+    setDate(formattedDate);
   }
     , [dateValue])
 
@@ -66,9 +69,9 @@ export default function FilterCourses() {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={selectedCurrentCity}
+              value={leavingCity}
               label="City"
-              onChange={(event) => { setSelectedCurrentCity(event.target.value), setSelectedDestinationCity("") }}
+              onChange={(event) => { setleavingCity(event.target.value), setarrivingCity("") }}
             >
               {cities?.map((city: String, index: number) => (
                 <MenuItem key={index} value={cities[index]}>
@@ -96,12 +99,12 @@ export default function FilterCourses() {
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">City</InputLabel>
             <Select
-              disabled={selectedCurrentCity === ""}
+              disabled={leavingCity === ""}
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={selectedDestinationCity}
+              value={arrivingCity}
               label="City"
-              onChange={(event) => setSelectedDestinationCity(event.target.value)}
+              onChange={(event) => setarrivingCity(event.target.value)}
             >
               {filteredCities?.map((city: String, index: number) => (
                 <MenuItem key={index} value={city.toString()}>

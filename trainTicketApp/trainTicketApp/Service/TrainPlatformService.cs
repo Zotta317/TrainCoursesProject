@@ -5,7 +5,7 @@ namespace trainTicketApp.Service
 {
     public interface ITrainPlatformService
     {
-        List<TrainPlatforms> GetPlatformsByCity(string city);
+        List<String> GetPlatformsByCity(string city);
     }
     public class TrainPlatformService : ITrainPlatformService
     {
@@ -16,7 +16,7 @@ namespace trainTicketApp.Service
             _platformRepository = platformRepository;
         }
 
-        public List<TrainPlatforms> GetPlatformsByCity(string city)
+        public List<String> GetPlatformsByCity(string city)
         {
                 return _platformRepository.GetPlatformsByCity(city);
         }

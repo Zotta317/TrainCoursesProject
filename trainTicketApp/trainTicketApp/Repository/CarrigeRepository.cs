@@ -5,20 +5,20 @@ namespace trainTicketApp.Repository
 {
     public class CarrigeRepository
     {
-        private readonly TrainDbContext trainDbContext;
+        private readonly TrainDbContext _trainDbContext;
 
-        public CarrigeRepository(TrainDbContext _trainDbContext)
+        public CarrigeRepository(TrainDbContext trainDbContext)
         {
-            trainDbContext = _trainDbContext;
+           _trainDbContext = trainDbContext;
         }
 
         public List<Carrige> GetAllCarrigies()
         {
-            return trainDbContext.Carrige.ToList();
+            return _trainDbContext.Carrige.ToList();
         }
         public Carrige GetCarrigeByTrain(Guid trainId)
         {
-            return trainDbContext.Carrige.FirstOrDefault(c => c.TrainId == trainId);
+            return _trainDbContext.Carrige.FirstOrDefault(c => c.TrainId == trainId);
         }
     }
 }

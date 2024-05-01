@@ -16,20 +16,22 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddScoped<TrainRepository>();
-builder.Services.AddScoped<CourseRepository>();
-builder.Services.AddScoped<TicketRepository>();
 builder.Services.AddScoped<SeatRepository>();
 builder.Services.AddScoped<CarrigeRepository>();
 builder.Services.AddScoped<ProfileRepository>();
-builder.Services.AddScoped<TrainCourseRepository>();
+builder.Services.AddScoped<CourseSeatsRepository>();
 builder.Services.AddScoped<PlatformRepository>();
+builder.Services.AddScoped<CourseRepository>();
+builder.Services.AddScoped<TrainCourseRepository>();
 
+builder.Services.AddScoped<ITrainCourseRepository,TrainCourseRepository>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
-builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+
 
 builder.Services.AddScoped<ITrainPlatformService, TrainPlatformService>();
-builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ITicketService, TicketService>();
+builder.Services.AddScoped<ITrainCourseService, TrainCourseService>();
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

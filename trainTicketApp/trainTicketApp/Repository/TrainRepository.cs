@@ -6,31 +6,31 @@ namespace trainTicketApp.Repository
 {
     public class TrainRepository
     {
-        private readonly TrainDbContext trainDbContext;
+        private readonly TrainDbContext _trainDbContext;
 
         public TrainRepository(TrainDbContext context)
         {
-            trainDbContext = context;
+            _trainDbContext = context;
         }
 
         public List<Train> GetAllTrains()
         {
-            return trainDbContext.Train.ToList();
+            return _trainDbContext.Train.ToList();
         }
 
         public Train GetTrainById(Guid trainId)
         {
-            return trainDbContext.Train.FirstOrDefault(train => train.TrainID == trainId);
+            return _trainDbContext.Train.FirstOrDefault(train => train.TrainID == trainId);
         }
 
         public string GetTrainName(Guid trainId)
         {
-            return trainDbContext.Train.FirstOrDefault(train => train.TrainID == trainId).TrainName;
+            return _trainDbContext.Train.FirstOrDefault(train => train.TrainID == trainId).TrainName;
         }
 
         public int GetTrainSeatsNumber(Guid trainId)
         {
-            return trainDbContext.Train.FirstOrDefault(train => train.TrainID == trainId).NumberOfSeats;
+            return _trainDbContext.Train.FirstOrDefault(train => train.TrainID == trainId).NumberOfSeats;
         }
     }
 }

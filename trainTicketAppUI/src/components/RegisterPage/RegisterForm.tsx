@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Button, Grid, IconButton, InputAdornment, Link, TextField } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Box, Button, Grid, IconButton, InputAdornment, Link, TextField } from "@mui/material";
 
 export default function RegisterForm({ onSubmit} : any){
     const [showPassword, setShowPassword] = useState(false);
@@ -57,9 +57,10 @@ export default function RegisterForm({ onSubmit} : any){
       }
     };
 
+    
     return(
         <>
-         <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit(onSubmit)}>
+         <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                   margin="normal"
                   required
@@ -165,7 +166,7 @@ export default function RegisterForm({ onSubmit} : any){
                     </Link>
                   </Grid>
                 </Grid>
-              </Box>
+              </form>
         
         </>
     )

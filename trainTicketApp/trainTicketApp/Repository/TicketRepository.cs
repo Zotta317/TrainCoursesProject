@@ -1,5 +1,4 @@
-﻿
-using trainTicketApp.DTOs;
+﻿using trainTicketApp.DTOs;
 using trainTicketApp.Model;
 using static trainTicketApp.Data.TraintDataApi;
 
@@ -15,34 +14,33 @@ namespace trainTicketApp.Repository
     }
     public class TicketRepository : ITicketRepository
     {
-        private readonly TrainDbContext trainDbContext;
-        private readonly CourseRepository courseRepository;
-        private readonly SeatRepository seatRepository;
-        private readonly TrainRepository trainRepository;
-        private readonly TrainCourseRepository trainCourseRepository;
-        private readonly CarrigeRepository carrigeRepository;
-        private readonly ProfileRepository profileRepository;
-        private readonly PlatformRepository platformRepository;
+        private readonly TrainDbContext _trainDbContext;
+        private readonly TrainCourseRepository _trainCourseRepository;
+        private readonly SeatRepository _seatRepository;
+        private readonly TrainRepository _trainRepository;
+        private readonly CourseSeatsRepository _courseSeatsRepository;
+        private readonly CarrigeRepository _carrigeRepository;
+        private readonly ProfileRepository _profileRepository;
+        private readonly PlatformRepository _platformRepository;
 
-        public TicketRepository(TrainDbContext _trainDbContext, CourseRepository _courseRepository, SeatRepository _seatRepository, 
-            TrainRepository _trainRepository, TrainCourseRepository _trainCourseRepository,CarrigeRepository _carrigeRepository,
-            ProfileRepository _profileRepository,PlatformRepository _platformRepository)
+        public TicketRepository(TrainDbContext trainDbContext, TrainCourseRepository trainCourseRepository, SeatRepository seatRepository, 
+            TrainRepository trainRepository, CourseSeatsRepository courseSeatsRepository, CarrigeRepository carrigeRepository,
+            ProfileRepository profileRepository,PlatformRepository platformRepository)
         {
-            trainDbContext = _trainDbContext;
-            courseRepository = _courseRepository;
-            seatRepository = _seatRepository;
-            trainRepository = _trainRepository;
-            trainCourseRepository = _trainCourseRepository;
-            carrigeRepository = _carrigeRepository;
-            profileRepository = _profileRepository;
-            platformRepository = _platformRepository;
-        }
+            _trainDbContext = trainDbContext;
+            _trainCourseRepository = trainCourseRepository;
+            _seatRepository = seatRepository;
+            _trainRepository = trainRepository;
+            _courseSeatsRepository = courseSeatsRepository;
+            _carrigeRepository = carrigeRepository;
+            _profileRepository = profileRepository;
+            _platformRepository = platformRepository;
+        }   
 
         public async Task<Ticket> AddTicket(Guid courseID, Guid userId)
         {
-            var course = courseRepository.GetCourseById(courseID);
-            var seatId = await trainCourseRepository.UpdateTrainCourseSeat(courseID);
-            var platform = platformRepository.GetPlatformById(course.LeavingCity);
+            var course = _trainCourseRepository.GetTrainCourseById(courseID);
+            var seatId = await _courseSeatsRepository.UpdateTrainCourseSeat(courseID);
             var ticket = new Ticket
             {
                 TicketID = Guid.NewGuid(),
@@ -50,12 +48,12 @@ namespace trainTicketApp.Repository
                 TrainId = course.TrainId,
                 SeatId = seatId,
                 CourseId = courseID,
-                PlatformId = platform.PlatformID
+                PlatformId = course.Leavingcity,
             };
 
-            await trainDbContext.Ticket.AddAsync(ticket);
+            await _trainDbContext.Ticket.AddAsync(ticket);
 
-            await trainDbContext.SaveChangesAsync();
+            await _trainDbContext.SaveChangesAsync();
 
             return ticket;
 
@@ -63,12 +61,12 @@ namespace trainTicketApp.Repository
 
         public List<Ticket> GetAllUserTickets(Guid userID)
         {
-            return trainDbContext.Ticket.Where(t => t.ProfileId == userID).ToList();
+            return _trainDbContext.Ticket.Where(t => t.ProfileId == userID).ToList();
         }
 
         public List<TicketGetDTO> GetTickets(Guid userID)
         {
-            var user = profileRepository.GetProfileById(userID);
+            var user = _profileRepository.GetProfileById(userID);
 
             //Sql Version
             //var ticketDtos = (
@@ -97,12 +95,12 @@ namespace trainTicketApp.Repository
             var tickets = GetAllUserTickets(userID);
             foreach (var ticket in tickets)
             {
-                var course = courseRepository.GetCourseById(ticket.CourseId);
-                var seat = seatRepository.GetBySeatId(ticket.SeatId);
-                var train = trainRepository.GetTrainName(ticket.TrainId);
-                var carrige = carrigeRepository.GetCarrigeByTrain(ticket.TrainId);
-                var arrivingCity = platformRepository.GetPlatformById(course.ArrivingCity).City;
-                var leavingCity = platformRepository.GetPlatformById(course.LeavingCity).City;
+                var trainCourse = _trainCourseRepository.GetTrainCourseById(ticket.CourseId);
+                var seat = _seatRepository.GetBySeatId(ticket.SeatId);
+                var train = _trainRepository.GetTrainName(ticket.TrainId);
+                var carrige = _carrigeRepository.GetCarrigeByTrain(ticket.TrainId);
+                var arrivingCity = _platformRepository.GetPlatformById(trainCourse.ArrivingCity).City;
+                var leavingCity = _platformRepository.GetPlatformById(trainCourse.Leavingcity).City;
 
                 var ticketDTO = new TicketGetDTO
                 {
@@ -112,8 +110,8 @@ namespace trainTicketApp.Repository
                     SeatName = seat.SeatName,
                     ArrivingCity = arrivingCity,
                     LeavingCity =leavingCity,
-                    ArrivingTime = course.ArivingTime,
-                    LeavingTime = course.ArivingTime,
+                    ArrivingTime = trainCourse.ArrivingDate,
+                    LeavingTime = trainCourse.LeavingDate,
                     ClientName = $"{user.FirstName} {user.LastName}",
                 };
 

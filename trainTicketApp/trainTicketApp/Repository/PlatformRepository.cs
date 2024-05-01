@@ -5,31 +5,39 @@ namespace trainTicketApp.Repository
 {
     public class PlatformRepository
     {
-        private readonly TraintDataApi.TrainDbContext trainDbContext;
+        private readonly TraintDataApi.TrainDbContext _trainDbContext;
 
-        public PlatformRepository(TraintDataApi.TrainDbContext _trainDbContext)
+        public PlatformRepository(TraintDataApi.TrainDbContext trainDbContext)
         {
-            trainDbContext = _trainDbContext;
+            _trainDbContext = trainDbContext;
         }
 
         public List<TrainPlatforms> GetAllPlatforms()
         {
-            return trainDbContext.TrainPlatforms.ToList();
+            return _trainDbContext.TrainPlatforms.ToList();
         }
 
         public TrainPlatforms GetPlatformById(Guid id)
         {
-            return trainDbContext.TrainPlatforms.FirstOrDefault(x => x.PlatformID == id);
+            return _trainDbContext.TrainPlatforms.FirstOrDefault(x => x.PlatformID == id);
         }
 
         public string GetPlatformCity(Guid id)
         {
-            return trainDbContext.TrainPlatforms.FirstOrDefault(x => x.PlatformID == id).City;
+            return _trainDbContext.TrainPlatforms.FirstOrDefault(x => x.PlatformID == id).City;
         }
 
-        public List<TrainPlatforms> GetPlatformsByCity(string name)
+        public string GetPlatformName(Guid id)
         {
-            return trainDbContext.TrainPlatforms.Where(p => p.City == name).ToList();
+            return _trainDbContext.TrainPlatforms.FirstOrDefault(x => x.PlatformID == id).Name;
+        }
+
+        public List<String> GetPlatformsByCity(string name)
+        {
+            return _trainDbContext.TrainPlatforms.
+                Where(p => p.City == name)
+                .Select(p => p.Name).
+                ToList();
         }
     }
 }

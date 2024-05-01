@@ -1,20 +1,48 @@
 ﻿using trainTicketApp.Data;
+using trainTicketApp.DTOs;
 using trainTicketApp.Model;
 
 namespace trainTicketApp.Repository
 {
-    public class ProfileRepository
+    public interface IProfileRepository
     {
-        private readonly TraintDataApi.TrainDbContext trainDbContext;
+        public Profile GetProfileById(Guid userId);
+        public ProfileGetDTO GetProfileDTOById(Guid userId);
 
-        public ProfileRepository(TraintDataApi.TrainDbContext _trainDbContext)
+        public List<Profile> GetAllProfiles();
+    }
+    public class ProfileRepository : IProfileRepository
+    {
+        private readonly TraintDataApi.TrainDbContext _trainDbContext;
+
+        public ProfileRepository(TraintDataApi.TrainDbContext trainDbContext)
         {
-            trainDbContext = _trainDbContext;
+            _trainDbContext = trainDbContext;
         }
 
         public Profile GetProfileById(Guid userId)
         {
-            return trainDbContext.User.FirstOrDefault(u => u.ID == userId);
+            return _trainDbContext.User.FirstOrDefault(u => u.ID == userId);
+        }
+
+        public List<Profile> GetAllProfiles()
+        {
+            return _trainDbContext.User.Where(p => p.IsAdmin == false).ToList();
+        }
+
+        public ProfileGetDTO GetProfileDTOById(Guid userId)
+        {
+            var user = _trainDbContext.User.FirstOrDefault(p => p.ID == userId);
+
+            var profile = new ProfileGetDTO { 
+                    Name = $"{user.FirstName}{user.LastName}",
+                    Role = user.Role,
+                    NickName = user.NickName,
+                    EmailAddress = user.EmailAddress,
+                    IsAdmin = user.IsAdmin,
+            };
+
+            return profile;
         }
     }
 }
